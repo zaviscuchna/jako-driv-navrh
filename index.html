@@ -41,7 +41,7 @@
       --gutter: clamp(1.5rem, 5vw, 5rem);
     }
 
-    html { scroll-behavior: smooth; }
+    html { scroll-behavior: smooth; overflow-x: clip; }
 
     body {
       font-family: var(--font-body);
@@ -441,6 +441,7 @@
       padding: .75rem 0;
     }
     .menu-item-name { font-size: var(--t-base); font-weight: 500; white-space: nowrap; }
+    @media (max-width: 640px) { .menu-item-name { white-space: normal; } }
     .menu-item-desc { display: block; font-size: var(--t-xs); color: var(--muted); font-weight: 300; margin-top: .2rem; white-space: normal; }
     .menu-dots { flex: 1; border-bottom: 2px dotted var(--border); transform: translateY(-4px); min-width: 24px; }
     .menu-price {
