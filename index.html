@@ -4,846 +4,717 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Pekařství Jako Dřív — Jindřichův Hradec</title>
-  <meta name="description" content="Tradiční pekárna v Jindřichově Hradci. Kváskový chléb, máslové croissanty a čerstvé pečivo každý den od rána. Předobjednávky online.">
+  <meta name="description" content="Rodinné pekařství manželů Illeových v Klášterské ulici v Jindřichově Hradci. Recepty prověřené staletími, chléb ze žitného kvasu a rohlíky přímo z horkého plechu — každý den od 7:00.">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Bungee+Inline&family=Bungee&family=Fraunces:opsz,wght@9..144,900&family=Kaushan+Script&family=Dancing+Script:wght@500;700&family=Great+Vibes&family=Playfair+Display:ital,wght@0,700;0,900;1,700;1,900&family=Inter:wght@400;500;600;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@500;700&family=Great+Vibes&family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700;1,900&family=Inter:wght@300;400;500;600;800&display=swap" rel="stylesheet">
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
     :root {
-      /* NÁVRH 2 — „full Forma“: jedna plná značková barva + krémové karty, klikací web */
-      --gold:      #C8964A;
-      --gold-deep: #B37F35;
-      --cream:     #FAF3E4;
-      --card:      #FFFAF0;
-      --ink:       #1E1508;
-      --ink-soft:  rgba(30,21,8,.72);
-      --ink-faint: rgba(30,21,8,.45);
-      --dark:      #17110A;
-      --accent:    #9A6131;  /* kůrka chleba — vzorkováno z fotek pečiva */
-      --text-inv:  #F2EAD9;
+      --bg:      #FAF7F2;
+      --bg-dark: #17140E;
+      --surface: #F0E9DE;
+      --primary: #C68B3C;
+      --primary-deep: #A86F28;
+      --text:    #1C1915;
+      --text-inv:#F0EBE1;
+      --muted:   #8A7D72;
+      --border:  #DDD3C2;
 
-      --font-retro:   'Bungee Inline', cursive;
-      --font-retro-s: 'Bungee', cursive;
       --font-script:  'Dancing Script', cursive;
       --font-display: 'Playfair Display', Georgia, serif;
       --font-body:    'Inter', system-ui, sans-serif;
 
-      --t-xs:   clamp(0.72rem,  1vw,   0.85rem);
-      --t-sm:   clamp(0.875rem, 1.2vw, 1rem);
-      --t-base: clamp(1rem,     1.5vw, 1.125rem);
-      --t-lg:   clamp(1.125rem, 2vw,   1.375rem);
-      --t-2xl:  clamp(1.9rem,   4vw,   3rem);
-      --t-3xl:  clamp(2.4rem,   5.5vw, 4.6rem);
-      --t-mega: clamp(3rem,     8vw,   7rem);
+      --t-xs:   clamp(0.72rem,  1vw,    0.85rem);
+      --t-sm:   clamp(0.875rem, 1.2vw,  1rem);
+      --t-base: clamp(1rem,     1.5vw,  1.125rem);
+      --t-lg:   clamp(1.125rem, 2vw,    1.375rem);
+      --t-2xl:  clamp(2rem,     4vw,    3rem);
+      --t-3xl:  clamp(2.5rem,   6vw,    5rem);
+      --t-mega: clamp(3rem,     8vw,    7.5rem);
+      --t-hero: clamp(3.5rem,   9vw,    9rem);
 
       --ease:   cubic-bezier(0.25, 0.46, 0.45, 0.94);
       --spring: cubic-bezier(0.34, 1.56, 0.64, 1);
-      --pad:    clamp(4rem, 8vw, 7.5rem);
-      --gutter: clamp(1.25rem, 5vw, 5rem);
+      --pad:    clamp(5rem, 10vw, 10rem);
+      --gutter: clamp(1.5rem, 5vw, 5rem);
     }
 
     html { scroll-behavior: smooth; }
 
     body {
       font-family: var(--font-body);
-      background: var(--gold);
-      color: var(--ink);
+      background: var(--bg);
+      color: var(--text);
       overflow-x: hidden;
       -webkit-font-smoothing: antialiased;
       font-feature-settings: "kern" 1, "liga" 1;
     }
 
-    .label {
-      font-size: var(--t-xs); font-weight: 600;
-      letter-spacing: .16em; text-transform: uppercase;
-      color: var(--ink); opacity: .74;
+    /* ── NAV ── */
+    nav {
+      position: fixed; inset: 0 0 auto;
+      display: flex; justify-content: space-between; align-items: center;
+      padding: 1.25rem var(--gutter);
+      z-index: 100;
+      pointer-events: none;
+      transition: background .45s var(--ease), box-shadow .45s ease;
     }
-
-    .block-title {
-      font-family: 'Kaushan Script', var(--font-script), cursive;
-      font-size: clamp(2.1rem, 4.6vw, 3.9rem); font-weight: 400;
-      line-height: 1.14; letter-spacing: 0;
-      color: var(--ink);
-      margin-top: 1rem;
-      padding-right: .18em; /* dojezd švihu písma */
+    nav.nav-solid {
+      background: rgba(250,247,242,.92);
+      backdrop-filter: blur(12px);
+      box-shadow: 0 1px 0 var(--border);
     }
-    .block-title em { font-style: normal; color: var(--cream); }
-    .block-title.xl { font-size: clamp(2.5rem, 6vw, 5.2rem); line-height: 1.1; }
-    .block-title.on-dark { color: var(--text-inv); }
-    .block-title.on-dark em { color: var(--gold); }
-    .block-title.on-cream em { color: var(--gold); }
+    .nav-left { display: flex; align-items: center; gap: 1.75rem; pointer-events: all; }
+    .nav-link {
+      font-size: var(--t-xs); font-weight: 500;
+      letter-spacing: .13em; text-transform: uppercase;
+      color: #fff; text-decoration: none;
+      transition: color .4s ease, opacity .3s ease;
+    }
+    .nav-link:hover { opacity: .6; }
+    nav.nav-solid .nav-link { color: var(--text); }
+    .nav-sep { width: 1px; height: 14px; background: rgba(255,255,255,.3); transition: background .4s ease; }
+    nav.nav-solid .nav-sep { background: rgba(28,25,21,.2); }
 
-    .btn-dark {
-      display: inline-flex; align-items: center; gap: .6rem;
+    .nav-right { display: flex; align-items: center; gap: 1.5rem; pointer-events: all; }
+    .nav-cta {
       font-size: var(--t-xs); font-weight: 600;
       letter-spacing: .1em; text-transform: uppercase;
-      color: var(--cream); background: var(--ink);
-      padding: 1rem 1.75rem; border-radius: 999px;
-      text-decoration: none; border: none; cursor: pointer;
-      transition: transform .3s var(--spring), background .3s ease, box-shadow .3s ease;
+      color: var(--bg-dark); background: var(--primary);
+      padding: .65rem 1.3rem; border-radius: 2px;
+      text-decoration: none;
+      transition: background .3s ease, transform .3s var(--spring);
     }
-    .btn-dark:hover { transform: translateY(-3px); background: #000; box-shadow: 0 10px 24px rgba(23,17,10,.28); }
+    .nav-cta:hover { background: #d79c4d; transform: translateY(-2px); }
+    /* logo se „zadokuje" do nav až po odscrollování hero */
+    .nav-logo-mark {
+      width: 60px; height: 75px; opacity: 0;
+      pointer-events: none; flex-shrink: 0; color: var(--primary);
+      transform: translateY(-8px) scale(.9);
+      transition: opacity .45s ease, transform .45s var(--spring);
+    }
+    nav.nav-solid .nav-logo-mark { opacity: .95; transform: none; }
+    .nav-logo-mark svg { width: 100%; height: 100%; }
 
-    .stamp svg { width: 100%; height: 100%; }
+    @media (max-width: 680px) {
+      .nav-left .nav-link:not(:first-child), .nav-left .nav-sep { display: none; }
+      .nav-logo-mark { display: none; }
+    }
 
-    /* ══ MASTHEAD — zlatá, centrovaný brand ══ */
-    .masthead {
-      padding: clamp(2rem, 4.5vw, 3.2rem) var(--gutter) clamp(1.8rem, 4vw, 2.8rem);
-      text-align: center;
-    }
-    .mast-logo {
-      width: clamp(88px, 11vw, 120px); height: auto;
-      margin: 0 auto .4rem;
-      color: var(--ink);
-    }
-    .mast-logo svg { width: 100%; height: auto; display: block; }
-    .draw { stroke-dasharray: 600; stroke-dashoffset: 600; animation: draw 1.4s var(--ease) forwards; }
-    .draw.dd2 { animation-delay: .35s; }
-    .fade-in { opacity: 0; animation: fadein .8s ease forwards; }
-    .fade-in.fd1 { animation-delay: .9s; }
-    .fade-in.fd2 { animation-delay: 1.15s; }
-    @keyframes draw   { to { stroke-dashoffset: 0; } }
-    @keyframes fadein { to { opacity: 1; } }
-
-    .mast-script {
-      font-family: var(--font-script);
-      font-size: clamp(1.4rem, 3vw, 2.2rem);
-      font-weight: 500; color: var(--ink);
-      opacity: 0; animation: fadein .7s ease .5s forwards;
-    }
-    /* wordmark — retro inline typ (vzor Forma), naše barvy */
-    .mast-word {
-      font-family: 'Kaushan Script', var(--font-script), cursive;
-      font-size: clamp(2.9rem, 8.6vw, 7.2rem); font-weight: 400;
-      line-height: 1.12; letter-spacing: 0;
-      color: var(--cream);
-      margin-top: .4rem;
-      padding-right: .35em; /* prostor pro koncový švih písma */
-    }
-    .mast-word .w { display: inline-block; opacity: 0; transform: translateY(30px); transition: opacity .8s var(--ease), transform .8s var(--ease); }
-    .mast-word .w.vis { opacity: 1; transform: none; }
-    .mast-word em { font-style: normal; color: var(--ink); }
-
-    /* ══ NAV BAR — plnoformátový krémový pás (vzor Forma) ══ */
-    .topbar-wrap { position: sticky; top: 0; z-index: 100; padding: 0 var(--gutter); }
-    .topbar {
-      background: var(--cream);
-      max-width: 960px; margin: 0 auto;
-      display: flex; align-items: stretch; justify-content: space-evenly;
-      box-shadow: 0 2px 14px rgba(23,17,10,.16);
-      overflow-x: auto; scrollbar-width: none;
-    }
-    .topbar::-webkit-scrollbar { display: none; }
-    .topbar a {
-      font-family: var(--font-retro-s);
-      font-size: clamp(.64rem, .9vw, .78rem);
-      letter-spacing: .04em;
-      color: var(--ink); text-decoration: none;
-      padding: .75rem clamp(.6rem, 1.6vw, 1.2rem);
-      white-space: nowrap;
-      border-bottom: 3px solid transparent;
-      transition: color .25s ease, border-color .25s ease, background .25s ease;
-    }
-    .topbar a:hover { color: var(--gold-deep); }
-    .topbar a[aria-current="page"] { color: var(--gold-deep); border-bottom-color: var(--gold); }
-
-    /* ══ BANNER — aktuality (krémový plakát pod nav barem) ══ */
-    .banner-wrap { padding: clamp(2.2rem, 5vw, 4rem) var(--gutter) 0; display: flex; justify-content: center; }
-    .banner {
+    /* ── HERO ── */
+    .hero {
+      height: 100vh; min-height: 680px;
       position: relative;
-      width: min(760px, 100%);
-      background: var(--cream);
-      padding: clamp(2rem, 4.5vw, 3.2rem) clamp(1.5rem, 5vw, 3.5rem);
+      display: flex; align-items: flex-end; justify-content: center;
+      padding: clamp(4.5rem,8vh,6rem) var(--gutter) clamp(3.5rem,8vh,6.5rem);
+      overflow: hidden;
+    }
+    .hero-bg {
+      position: absolute; inset: 0;
+      background: url('foto/interier.jpg') center 24%/cover no-repeat;
+      filter: contrast(1.03) saturate(.8) brightness(.88);
+      transform: scale(1.04);
+      animation: heroZoom 8s var(--ease) forwards;
+    }
+    @keyframes heroZoom { to { transform: scale(1); } }
+    .hero-overlay {
+      position: absolute; inset: 0;
+      background: linear-gradient(to top,
+        rgba(23,20,14,.94) 0%, rgba(23,20,14,.48) 42%, rgba(23,20,14,.06) 100%);
+    }
+    .hero-content {
+      position: relative; z-index: 2; max-width: 1100px;
+      display: flex; flex-direction: column; align-items: center;
       text-align: center;
-      box-shadow: 0 20px 54px rgba(23,17,10,.2);
     }
-    .banner-side {
-      position: absolute; top: 50%; left: -1.05rem;
-      transform: translateY(-50%) rotate(180deg);
-      writing-mode: vertical-rl; white-space: nowrap;
-      font-size: var(--t-xs); font-weight: 800;
-      letter-spacing: .34em; text-transform: uppercase;
-      color: var(--ink);
-    }
-    .banner-wheat {
-      position: absolute; width: clamp(40px, 5vw, 56px);
-      color: var(--gold); opacity: .9;
-    }
-    .banner-wheat.bw1 { top: 1.2rem; left: 1.4rem; transform: rotate(-14deg); }
-    .banner-wheat.bw2 { bottom: 1.2rem; right: 1.4rem; transform: rotate(14deg); }
-    .banner-title {
-      font-family: 'Kaushan Script', var(--font-script), cursive;
-      font-size: clamp(1.9rem, 4.6vw, 3.5rem);
-      color: var(--gold-deep); line-height: 1.2;
-      padding-right: .18em;
-    }
-    .banner-items { margin-top: clamp(1.2rem, 3vw, 1.8rem); display: grid; gap: 1.05rem; }
-    .banner-item strong {
-      display: block;
-      font-family: var(--font-retro-s);
-      font-weight: 400; font-size: clamp(.95rem, 1.8vw, 1.3rem);
-      letter-spacing: .03em; color: var(--ink);
-    }
-    .banner-item span { display: block; margin-top: .15rem; font-size: var(--t-sm); color: var(--ink-soft); font-style: italic; }
-    .banner-item:nth-child(odd) strong { color: var(--accent); }
-    .banner-cta { margin-top: clamp(1.5rem, 3vw, 2rem); }
-    @media (max-width: 640px) { .banner-side { display: none; } }
 
-    /* ══ VIEWS — klikací obsah ══ */
-    main { min-height: 46vh; }
-    .view { display: none; }
-    .view.active { display: block; animation: viewin .55s var(--ease); }
-    @keyframes viewin { from { opacity: 0; transform: translateY(22px); } }
+    /* velké logo — oficiální, jemný nástup */
+    .hero-logo {
+      width: clamp(130px, 15vw, 190px);
+      aspect-ratio: 330 / 338;
+      color: var(--text-inv);
+      margin-bottom: clamp(1.25rem, 2.5vh, 2rem);
+      filter: drop-shadow(0 10px 34px rgba(0,0,0,.45));
+    }
+    .hero-logo .logo-mask {
+      opacity: 0; transform: scale(.94) translateY(8px);
+      animation: logoIn 1.4s var(--ease) .15s forwards;
+    }
+    @keyframes logoIn { to { opacity: 1; transform: none; } }
 
-    /* ── PLAKÁT — Dnes pečeme ── */
-    .poster-sec {
+    .hero-eyebrow {
+      display: inline-flex; align-items: center; gap: 1rem;
+      font-size: clamp(.8rem, 1.3vw, 1rem); font-weight: 500;
+      letter-spacing: .5em; text-indent: .5em; text-transform: uppercase;
+      color: var(--primary); margin-bottom: .75rem;
+      opacity: 0; transform: translateY(14px);
+      transition: opacity .6s ease, transform .6s var(--ease);
+    }
+    .hero-eyebrow::before, .hero-eyebrow::after {
+      content: ''; width: 34px; height: 1px; background: var(--primary); flex-shrink: 0;
+    }
+    .hero-eyebrow.vis { opacity: 1; transform: none; }
+    .hero-h1 {
+      font-family: var(--font-display);
+      font-size: var(--t-hero);
+      font-weight: 900; line-height: .9; letter-spacing: -.035em;
+      color: var(--text-inv); margin-bottom: 1.75rem;
+    }
+    .hero-h1 .w {
+      display: inline-block;
+      opacity: 0; transform: translateY(55px);
+      transition: opacity .8s var(--ease), transform .8s var(--ease);
+    }
+    .hero-h1 .w.vis { opacity: 1; transform: none; }
+    .hero-h1 em { font-family: var(--font-script); font-style: normal; font-weight: 700; font-size: 1.05em; letter-spacing: 0; color: var(--primary); }
+    .hero-sub {
+      font-size: var(--t-base); font-weight: 300;
+      color: rgba(240,235,225,.7);
+      max-width: 52ch; line-height: 1.65;
+      opacity: 0; transform: translateY(18px);
+      transition: opacity .7s ease, transform .7s var(--ease);
+    }
+    .hero-sub.vis { opacity: 1; transform: none; }
+    .hero-ctas {
+      display: flex; gap: 1rem; flex-wrap: wrap; justify-content: center; margin-top: 2.25rem;
+      opacity: 0; transform: translateY(18px);
+      transition: opacity .7s ease, transform .7s var(--ease);
+    }
+    .hero-ctas.vis { opacity: 1; transform: none; }
+    .btn-gold, .btn-ghost {
+      display: inline-flex; align-items: center; gap: .7rem;
+      padding: 1rem 2rem; border-radius: 2px;
+      font-size: var(--t-sm); font-weight: 600; letter-spacing: .04em;
+      text-decoration: none;
+      transition: background .3s ease, color .3s ease, transform .35s var(--spring), box-shadow .35s ease;
+    }
+    .btn-gold { background: var(--primary); color: var(--bg-dark); }
+    .btn-gold:hover { background: #d79c4d; transform: translateY(-3px); box-shadow: 0 12px 30px rgba(198,139,60,.35); }
+    .btn-ghost { background: transparent; color: var(--text-inv); border: 1px solid rgba(240,235,225,.35); }
+    .btn-ghost:hover { border-color: var(--text-inv); transform: translateY(-3px); }
+
+    .hero-scroll {
+      position: absolute; right: var(--gutter); bottom: clamp(3rem,7vw,7rem);
+      z-index: 2; display: flex; flex-direction: column; align-items: center; gap: .5rem;
+      opacity: 0; transition: opacity .6s ease 1.2s;
+    }
+    .hero-scroll.vis { opacity: 1; }
+    .hero-scroll span {
+      font-size: .6rem; letter-spacing: .22em; text-transform: uppercase;
+      color: rgba(240,235,225,.4); writing-mode: vertical-rl;
+    }
+    .scroll-line {
+      width: 1px; height: 56px;
+      background: linear-gradient(to bottom, var(--primary), transparent);
+      animation: sline 2.2s ease-in-out infinite;
+    }
+    @keyframes sline {
+      0%  { transform: scaleY(0); transform-origin: top; }
+      49% { transform: scaleY(1); transform-origin: top; }
+      50% { transform: scaleY(1); transform-origin: bottom; }
+      100%{ transform: scaleY(0); transform-origin: bottom; }
+    }
+
+    /* ── LINOCUT STAMPS (sdílené) ── */
+    .stamp { color: currentColor; }
+    .stamp svg { display: block; width: 100%; height: 100%; }
+
+    /* ── OFIKO LOGO — PNG maska, barví se přes currentColor ── */
+    .logo-mask {
+      display: block; width: 100%; height: 100%;
+      background: currentColor;
+      -webkit-mask: url('data:image/png;base64,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') center/contain no-repeat;
+      mask: url('data:image/png;base64,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') center/contain no-repeat;
+    }
+
+    /* ── DNES PEČEME ── */
+    .dnes {
+      background: var(--primary);
       padding: var(--pad) var(--gutter);
-      display: flex; justify-content: center;
+      position: relative; overflow: hidden;
     }
-    .poster {
+    .dnes-inner {
+      max-width: 1200px; margin: 0 auto;
+      display: grid; grid-template-columns: 1.1fr 1fr;
+      gap: clamp(3rem,6vw,6rem); align-items: center;
       position: relative;
-      width: min(640px, 100%);
-      background: var(--cream);
-      padding: clamp(2rem, 5vw, 3.5rem) clamp(1.5rem, 5vw, 3.5rem) clamp(1.75rem, 4vw, 2.75rem);
-      transform: rotate(-.8deg);
-      box-shadow: 0 24px 60px rgba(23,17,10,.22);
     }
-    .poster::after {
-      content: ''; position: absolute; top: 14px; left: 50%; transform: translateX(-50%);
-      width: 12px; height: 12px; border-radius: 50%;
-      background: var(--ink); box-shadow: inset 0 -2px 3px rgba(0,0,0,.4);
-    }
-    .poster-side {
-      position: absolute; top: 50%; left: -1.1rem;
-      transform: translateY(-50%) rotate(180deg);
-      writing-mode: vertical-rl; white-space: nowrap;
-      font-size: var(--t-xs); font-weight: 800;
-      letter-spacing: .34em; text-transform: uppercase;
-      color: var(--ink);
-    }
-    .poster-stamp {
-      position: absolute; top: 1.4rem; right: 1.4rem;
-      width: clamp(58px, 8vw, 84px); color: var(--gold-deep);
-      transform: rotate(9deg); opacity: .9;
-    }
-    .poster-head { text-align: center; }
-    .poster-kicker { font-family: var(--font-script); font-size: clamp(1.4rem, 3vw, 1.9rem); color: var(--gold-deep); }
-    .poster-title {
-      font-family: var(--font-retro); font-weight: 400;
-      font-size: var(--t-2xl); line-height: 1.05;
-      color: var(--ink);
-      margin-top: .3rem;
-    }
-    .poster-date {
-      display: inline-block; margin-top: .9rem;
+    @media (max-width: 860px) { .dnes-inner { grid-template-columns: 1fr; } }
+
+    .dnes-label {
       font-size: var(--t-xs); font-weight: 600;
-      letter-spacing: .18em; text-transform: uppercase;
-      color: var(--ink-soft);
-      border: 1px solid var(--ink-faint); border-radius: 999px;
-      padding: .4rem 1rem;
+      letter-spacing: .22em; text-transform: uppercase;
+      color: var(--bg-dark); opacity: .75; margin-bottom: 1.25rem;
     }
-    .poster-rows { margin-top: clamp(1.5rem, 3vw, 2.2rem); border-top: 2px dashed rgba(30,21,8,.25); }
-    .poster-row {
-      display: flex; align-items: baseline; gap: 1rem;
-      padding: 1.05rem 0;
-      border-bottom: 2px dashed rgba(30,21,8,.25);
+    .dnes-title {
+      font-family: var(--font-display);
+      font-size: var(--t-mega);
+      font-weight: 900; line-height: .92; letter-spacing: -.02em;
+      text-transform: uppercase;
+      color: var(--bg-dark);
+      margin-bottom: 1.75rem;
     }
-    .poster-item strong { display: block; font-family: var(--font-display); font-weight: 700; font-size: var(--t-lg); }
-    .poster-item span   { display: block; margin-top: .2rem; font-size: var(--t-sm); color: var(--ink-soft); }
-    .poster-dots { flex: 1; border-bottom: 2px dotted rgba(30,21,8,.35); transform: translateY(-4px); min-width: 24px; }
-    .poster-price { font-family: var(--font-display); font-weight: 900; font-size: var(--t-lg); font-variant-numeric: tabular-nums; white-space: nowrap; }
-    .poster-foot { margin-top: 1.6rem; display: flex; align-items: center; justify-content: space-between; gap: 1rem; flex-wrap: wrap; }
-    .poster-note { font-size: var(--t-sm); color: var(--ink-soft); font-style: italic; max-width: 30ch; }
-    @media (max-width: 640px) {
-      .poster { transform: none; }
-      .poster-side { display: none; }
-      .poster-foot { flex-direction: column; align-items: stretch; text-align: center; }
-      .poster-foot .btn-dark { justify-content: center; }
+    .dnes-title em { font-family: var(--font-script); font-style: normal; font-weight: 700; text-transform: none; letter-spacing: 0; color: var(--bg); }
+    .dnes-text {
+      font-size: var(--t-base); font-weight: 400;
+      color: rgba(23,20,14,.78); max-width: 42ch; line-height: 1.7;
     }
+    .dnes-wheat {
+      width: clamp(72px, 9vw, 120px); margin-top: 2.5rem;
+      color: var(--bg-dark); opacity: .85;
+    }
+
+    /* tabule — nakloněná karta jako lístek z pekárny */
+    .board {
+      background: var(--bg);
+      border-radius: 4px;
+      padding: clamp(1.75rem,3.5vw,2.75rem);
+      transform: rotate(-1.6deg);
+      box-shadow: 0 34px 80px rgba(23,20,14,.28);
+      position: relative;
+      transition: transform .5s var(--spring);
+    }
+    .board:hover { transform: rotate(-.4deg); }
+    .board::before {
+      content: '';
+      position: absolute; top: -14px; left: 50%;
+      transform: translateX(-50%) rotate(2deg);
+      width: 108px; height: 28px;
+      background: rgba(198,139,60,.32);
+      backdrop-filter: blur(2px);
+      border-left: 1px solid rgba(255,255,255,.5);
+      border-right: 1px solid rgba(255,255,255,.5);
+    }
+    .board-head {
+      display: flex; justify-content: space-between; align-items: baseline;
+      border-bottom: 2px solid var(--text); padding-bottom: .9rem; margin-bottom: .5rem;
+    }
+    .board-title {
+      font-family: var(--font-display);
+      font-size: clamp(1.3rem,2.4vw,1.8rem);
+      font-weight: 900; letter-spacing: .02em; text-transform: uppercase;
+    }
+    .board-date {
+      font-family: var(--font-script);
+      font-size: clamp(1.05rem,1.8vw,1.3rem);
+      color: var(--primary-deep);
+    }
+    .board-row {
+      display: flex; justify-content: space-between; align-items: baseline; gap: 1rem;
+      padding: .95rem 0; border-bottom: 1px dashed var(--border);
+    }
+    .board-row:last-of-type { border-bottom: none; }
+    .board-item strong {
+      display: block;
+      font-family: var(--font-display);
+      font-size: clamp(1.05rem,1.9vw,1.3rem);
+      font-weight: 700; letter-spacing: -.01em;
+    }
+    .board-item span { font-size: var(--t-xs); color: var(--muted); font-weight: 400; }
+    .board-price {
+      font-family: var(--font-display);
+      font-size: clamp(1.05rem,1.9vw,1.3rem);
+      font-weight: 700; color: var(--primary-deep); white-space: nowrap;
+    }
+    .board-cta {
+      display: flex; align-items: center; justify-content: space-between; gap: 1rem;
+      margin-top: 1.4rem; padding-top: 1.4rem;
+      border-top: 2px solid var(--text);
+      flex-wrap: wrap;
+    }
+    .board-note { font-size: var(--t-xs); color: var(--muted); max-width: 24ch; line-height: 1.5; }
+    .btn-dark {
+      display: inline-flex; align-items: center; gap: .7rem;
+      padding: .9rem 1.7rem; border-radius: 2px;
+      background: var(--bg-dark); color: var(--text-inv);
+      font-size: var(--t-sm); font-weight: 600; letter-spacing: .04em;
+      text-decoration: none;
+      transition: background .3s ease, transform .35s var(--spring), box-shadow .35s ease;
+    }
+    .btn-dark:hover { background: var(--primary-deep); transform: translateY(-3px); box-shadow: 0 12px 28px rgba(23,20,14,.3); }
+
+    /* razítko v rohu tabule — logo pekárny */
+    .board-stamp {
+      position: absolute; top: -34px; right: -26px;
+      width: 96px; height: 120px;
+      color: var(--primary-deep);
+      transform: rotate(9deg);
+      opacity: .92;
+    }
+    @media (max-width: 500px) { .board-stamp { width: 74px; height: 93px; top: -26px; right: -10px; } }
+
+    /* ── SHARED ── */
+    .label {
+      font-size: var(--t-xs); font-weight: 600;
+      letter-spacing: .22em; text-transform: uppercase;
+      color: var(--primary); margin-bottom: 1.25rem;
+    }
+    .title {
+      font-family: var(--font-display);
+      font-size: var(--t-3xl);
+      font-weight: 700; line-height: 1.06; letter-spacing: -.025em;
+      color: var(--text); margin-bottom: 1.5rem;
+    }
+    /* podpis sekcí — verzálky × kurzíva (styl „DNES pečeme") */
+    .block-title {
+      font-family: var(--font-display);
+      font-size: var(--t-3xl);
+      font-weight: 900; line-height: .95; letter-spacing: -.02em;
+      text-transform: uppercase;
+      color: var(--text); margin-bottom: 1.5rem;
+    }
+    .block-title em { font-family: var(--font-script); font-style: normal; font-weight: 700; text-transform: none; letter-spacing: 0; color: var(--primary); }
+    .block-title.xl { font-size: var(--t-mega); line-height: .92; margin-bottom: 1.75rem; }
+    .block-title.on-dark { color: var(--text-inv); }
+    .section-stamp {
+      width: clamp(60px, 7vw, 92px);
+      margin-top: 2.25rem;
+      color: var(--primary); opacity: .9;
+    }
+    .section-stamp svg { width: 100%; height: auto; display: block; }
+    .body-text {
+      font-size: var(--t-base); font-weight: 300;
+      color: var(--muted); line-height: 1.8; max-width: 48ch;
+    }
+    .body-text p + p { margin-top: .9rem; }
 
     /* ── PŘÍBĚH ── */
     .story { padding: var(--pad) var(--gutter); }
     .story-inner {
+      display: grid; grid-template-columns: 1fr 1fr;
+      gap: clamp(3rem,7vw,8rem); align-items: center;
       max-width: 1200px; margin: 0 auto;
-      display: grid; grid-template-columns: 1fr 1.05fr;
-      gap: clamp(2.5rem, 6vw, 5.5rem); align-items: center;
     }
-    @media (max-width: 900px) { .story-inner { grid-template-columns: 1fr; } }
-    .story .body-text { margin-top: 1.5rem; display: grid; gap: 1rem; font-size: var(--t-base); line-height: 1.7; color: rgba(30,21,8,.8); max-width: 52ch; }
-    .stats {
-      margin-top: 2.2rem;
-      display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem;
+    @media (max-width: 780px) { .story-inner { grid-template-columns: 1fr; } }
+    .stats { display: flex; gap: 1.75rem; margin-top: 2.5rem; flex-wrap: wrap; }
+    .stat { border-left: 2px solid var(--border); padding-left: 1.25rem; }
+    .stat-num {
+      font-family: var(--font-display);
+      font-size: clamp(1.75rem,3.5vw,2.5rem);
+      font-weight: 700; color: var(--text); letter-spacing: -.02em;
     }
-    .stat { border-top: 2px solid var(--ink); padding-top: .8rem; }
-    .stat-num { font-family: var(--font-display); font-weight: 900; font-size: var(--t-2xl); line-height: 1; }
-    .stat-lbl { margin-top: .3rem; font-size: var(--t-xs); font-weight: 600; letter-spacing: .1em; text-transform: uppercase; color: var(--ink-soft); }
-    .story-photos { position: relative; display: grid; gap: clamp(1rem, 2vw, 1.5rem); }
-    .story-photo {
-      background: var(--cream); padding: 12px 12px 40px;
-      box-shadow: 0 18px 44px rgba(23,17,10,.22);
-      position: relative;
+    .stat-lbl { font-size: var(--t-xs); color: var(--muted); margin-top: .15rem; }
+    .story-img {
+      position: relative; border-radius: 3px;
+      overflow: hidden; aspect-ratio: 4/5;
+      box-shadow: 0 30px 70px rgba(23,20,14,.12);
     }
-    .story-photo img { width: 100%; display: block; object-fit: cover; }
-    .story-photo.ph1 { transform: rotate(-1.2deg); }
-    .story-photo.ph1 img { aspect-ratio: 16 / 10; }
-    .story-photo.ph2 { transform: rotate(1.4deg); width: 68%; justify-self: end; margin-top: -8%; }
-    .story-photo.ph2 img { aspect-ratio: 4 / 3; }
-    .story-photo-tag {
-      position: absolute; left: 1.2rem; right: 0; bottom: 10px;
-      text-align: left;
-      font-family: var(--font-script); font-size: clamp(1rem, 1.6vw, 1.3rem);
-      color: var(--ink-soft);
+    .story-img img {
+      width: 100%; height: 100%; object-fit: cover;
+      filter: sepia(.08) contrast(1.04) brightness(.97);
+      transition: transform .9s var(--ease);
+    }
+    .story-img:hover img { transform: scale(1.04); }
+    .story-img-tag {
+      position: absolute; bottom: 1.25rem; right: 1.25rem;
+      background: rgba(23,20,14,.72); backdrop-filter: blur(10px);
+      padding: .55rem 1rem; border-radius: 2px;
+      font-family: var(--font-script); font-size: 1.1rem;
+      color: var(--text-inv); letter-spacing: .02em;
     }
 
-    /* ── GALERIE ── */
-    .gallery { background: var(--cream); padding: var(--pad) 0; }
-    .gallery-head {
-      max-width: 1200px; margin: 0 auto;
-      padding: 0 var(--gutter);
-      display: flex; align-items: flex-end; justify-content: space-between; gap: 2rem;
+    /* ── NABÍDKA / CENÍK ── */
+    .nabidka { padding: var(--pad) var(--gutter); background: var(--surface); }
+    .nabidka-inner { max-width: 1100px; margin: 0 auto; }
+    .nabidka-head { text-align: center; margin-bottom: clamp(3rem,6vw,4.5rem); }
+    .nabidka-head .title { margin-bottom: .75rem; }
+    .nabidka-sub { font-size: var(--t-sm); color: var(--muted); font-weight: 300; font-style: italic; }
+    .menu-grid {
+      display: grid; grid-template-columns: 1fr 1fr;
+      gap: clamp(2.5rem,5vw,5rem);
+      align-items: start;
     }
-    .gallery-note { font-size: var(--t-sm); color: var(--ink-soft); max-width: 34ch; text-align: right; }
-    .gallery-strip {
-      display: flex; align-items: center; gap: clamp(1.2rem, 2.5vw, 2.2rem);
-      margin-top: clamp(1.5rem, 3vw, 2.2rem);
-      padding: clamp(2rem, 4vw, 3rem) var(--gutter) clamp(2.5rem, 5vw, 3.5rem);
-      overflow-x: auto;
-      scroll-snap-type: x mandatory;
-      scrollbar-width: none;
+    @media (max-width: 780px) { .menu-grid { grid-template-columns: 1fr; } }
+    .menu-cat { margin-bottom: 2.5rem; }
+    .menu-cat-title {
+      display: flex; align-items: center; gap: .9rem;
+      font-family: var(--font-display);
+      font-size: clamp(1.2rem,2.2vw,1.6rem);
+      font-weight: 900; text-transform: uppercase; letter-spacing: .04em;
+      margin-bottom: 1.4rem;
     }
-    .gallery-strip::-webkit-scrollbar { display: none; }
-    .g-card {
-      flex: 0 0 clamp(220px, 26vw, 330px); scroll-snap-align: start;
-      background: #fff; padding: 10px 10px 8px;
-      box-shadow: 0 16px 36px rgba(30,21,8,.18);
+    .menu-cat-title .cat-stamp { width: 34px; height: 34px; color: var(--primary-deep); flex-shrink: 0; }
+    .menu-item {
+      display: flex; align-items: baseline; gap: .6rem;
+      padding: .75rem 0;
+    }
+    .menu-item-name { font-size: var(--t-base); font-weight: 500; white-space: nowrap; }
+    .menu-item-desc { display: block; font-size: var(--t-xs); color: var(--muted); font-weight: 300; margin-top: .2rem; white-space: normal; }
+    .menu-dots { flex: 1; border-bottom: 2px dotted var(--border); transform: translateY(-4px); min-width: 24px; }
+    .menu-price {
+      font-family: var(--font-display);
+      font-size: var(--t-base); font-weight: 700; color: var(--primary-deep); white-space: nowrap;
+    }
+    .menu-tag {
+      display: inline-block;
+      font-size: .6rem; font-weight: 600; letter-spacing: .12em; text-transform: uppercase;
+      color: var(--primary-deep);
+      border: 1px solid rgba(168,111,40,.4); border-radius: 100px;
+      padding: .12rem .5rem; margin-left: .45rem;
+      vertical-align: 2px;
+    }
+    .nabidka-cta { text-align: center; margin-top: 2rem; }
+    .nabidka-note { font-size: var(--t-xs); color: var(--muted); margin-top: 1.1rem; font-style: italic; }
+
+    /* ── KÁVA — Nordbeans ── */
+    .kava { padding: var(--pad) var(--gutter); background: var(--bg); }
+    .kava-inner {
+      max-width: 1100px; margin: 0 auto;
+      display: grid; grid-template-columns: 1fr 1.2fr;
+      gap: clamp(3rem,6vw,7rem); align-items: center;
+    }
+    @media (max-width: 780px) { .kava-inner { grid-template-columns: 1fr; } }
+    .kava-img {
+      display: block; position: relative;
+      max-width: min(400px, 82%);
+      margin: 0 auto;
+      transform: rotate(-2deg);
+      transition: transform .5s var(--spring);
+    }
+    .kava-img:hover { transform: rotate(-.5deg) translateY(-6px) scale(1.02); }
+    .kava-img img { width: 100%; display: block; filter: drop-shadow(0 28px 44px rgba(23,20,14,.28)); }
+    .kava-img-tag {
+      position: absolute; bottom: 1.1rem; right: 1.1rem;
+      background: rgba(23,20,14,.72); backdrop-filter: blur(10px);
+      padding: .5rem .95rem; border-radius: 2px;
+      font-family: var(--font-script); font-size: 1.05rem;
+      color: var(--text-inv); letter-spacing: .02em;
+    }
+    .kava-link { color: var(--primary-deep); font-weight: 500; text-decoration: underline; text-underline-offset: 3px; }
+    .kava-link:hover { color: var(--primary); }
+
+    /* ── PEČIVO — pověšené polaroidy ── */
+    .pecivo { padding: var(--pad) 0 calc(var(--pad) * .85); background: var(--bg); }
+    .pecivo-head {
+      display: flex; justify-content: space-between; align-items: flex-end;
+      padding: 0 var(--gutter); margin-bottom: 3.5rem; gap: 2rem;
+    }
+    .pecivo-note {
+      font-size: var(--t-sm); font-weight: 300; font-style: italic;
+      color: var(--muted); max-width: 28ch; text-align: right; line-height: 1.55;
+    }
+    @media (max-width: 600px) { .pecivo-note { display: none; } }
+    .polaroid-wall {
+      display: flex; flex-wrap: wrap; justify-content: center;
+      gap: clamp(1.25rem, 3vw, 2.75rem);
+      padding: 1rem var(--gutter) 0;
+      max-width: 1280px; margin: 0 auto;
+    }
+    .polaroid {
+      --r: 0deg;
+      position: relative;
+      width: clamp(190px, 23vw, 290px);
+      margin: 0;
+      background: var(--bg);
+      padding: 10px 10px 0;
+      border-radius: 2px;
+      box-shadow: 0 16px 40px rgba(23,20,14,.22);
+      transform: rotate(var(--r));
       transition: transform .45s var(--spring), box-shadow .45s ease;
     }
-    /* rozházení po ploše — každý polaroid jinak */
-    .g-card:nth-child(1) { transform: rotate(-2.6deg) translateY(16px); }
-    .g-card:nth-child(2) { transform: rotate(1.9deg)  translateY(-20px); flex-basis: clamp(250px, 29vw, 370px); }
-    .g-card:nth-child(3) { transform: rotate(-1.3deg) translateY(26px); flex-basis: clamp(200px, 23vw, 300px); }
-    .g-card:nth-child(4) { transform: rotate(2.7deg)  translateY(-10px); }
-    .g-card:nth-child(5) { transform: rotate(-2.1deg) translateY(20px); flex-basis: clamp(250px, 29vw, 370px); }
-    .g-card:hover { transform: rotate(0) translateY(0) scale(1.03); box-shadow: 0 24px 50px rgba(30,21,8,.24); z-index: 2; position: relative; }
-    .g-card img {
-      width: 100%; aspect-ratio: 4 / 4.4; object-fit: cover;
-      display: block;
-      filter: contrast(1.03) saturate(.94);
+    .polaroid:nth-child(even) { margin-top: 2.75rem; }
+    .polaroid:hover { transform: rotate(0deg) scale(1.05); box-shadow: 0 26px 60px rgba(23,20,14,.32); z-index: 3; }
+    .polaroid img {
+      width: 100%; aspect-ratio: 10/11; object-fit: cover; display: block;
+      filter: sepia(.06) contrast(1.03) brightness(.99);
     }
-    .g-card:nth-child(2) img, .g-card:nth-child(5) img { aspect-ratio: 4 / 3.6; }
-    .g-card figcaption {
-      padding: .5rem .2rem .35rem; text-align: center;
+    .polaroid figcaption {
       font-family: var(--font-script);
-      font-size: clamp(.95rem, 1.5vw, 1.2rem);
-      color: var(--ink-soft);
+      font-size: clamp(1rem, 1.6vw, 1.25rem);
+      color: #55493C; text-align: center;
+      padding: .6rem .25rem .85rem;
     }
-    .g-brand {
-      flex: 0 0 clamp(220px, 26vw, 330px); scroll-snap-align: start;
-      aspect-ratio: 4 / 4.6;
-      transform: rotate(1.6deg) translateY(-12px);
-      background: var(--gold); border-radius: 10px;
-      display: flex; flex-direction: column; align-items: center; justify-content: center;
-      gap: 1rem; padding: 1.5rem; text-align: center;
+    .polaroid .tape {
+      position: absolute; top: -13px; left: 50%;
+      width: 92px; height: 26px;
+      background: rgba(198,139,60,.35);
+      backdrop-filter: blur(2px);
+      border-left: 1px solid rgba(255,255,255,.55);
+      border-right: 1px solid rgba(255,255,255,.55);
+      transform: translateX(-50%) rotate(var(--tr, -2deg));
     }
-    .g-brand-script { font-family: var(--font-script); font-size: clamp(1.6rem, 2.6vw, 2.2rem); color: var(--ink); line-height: 1.2; }
-    .g-brand-sep { width: 44px; height: 2px; background: var(--ink); opacity: .5; }
-    .g-brand-sub { font-size: var(--t-xs); font-weight: 600; letter-spacing: .16em; text-transform: uppercase; color: var(--ink-soft); }
-
-    /* ── CENÍK ── */
-    .nabidka { padding: var(--pad) var(--gutter); }
-    .nabidka-head { text-align: center; max-width: 900px; margin: 0 auto; }
-    .nabidka-sub { margin-top: 1.1rem; font-size: var(--t-base); color: var(--ink-soft); }
-    .menu-sheet {
-      max-width: 1080px;
-      margin: clamp(2.5rem, 5vw, 4rem) auto 0;
-      background: var(--card);
-      border-radius: 14px;
-      padding: clamp(1.75rem, 4.5vw, 3.5rem);
-      box-shadow: 0 24px 60px rgba(23,17,10,.2);
-    }
-    .menu-grid { display: grid; grid-template-columns: 1fr 1fr; gap: clamp(2rem, 4.5vw, 4rem); }
-    @media (max-width: 820px) { .menu-grid { grid-template-columns: 1fr; } }
-    .menu-cat + .menu-cat { margin-top: clamp(2rem, 4vw, 3rem); }
-    .menu-cat-title {
-      display: flex; align-items: center; gap: .8rem;
-      font-family: 'Kaushan Script', var(--font-script), cursive; font-weight: 400;
-      font-size: clamp(1.35rem, 2.2vw, 1.75rem); letter-spacing: 0;
-      padding-bottom: .7rem; border-bottom: 2px solid var(--ink);
-    }
-    .cat-stamp { width: 34px; height: 34px; color: var(--gold-deep); flex-shrink: 0; }
-    .menu-item { display: flex; align-items: baseline; gap: .75rem; padding: .95rem 0; border-bottom: 1px solid rgba(30,21,8,.14); }
-    .menu-item:last-child { border-bottom: none; }
-    .menu-item-name { font-weight: 600; font-size: var(--t-base); }
-    .menu-tag {
-      display: inline-block; margin-left: .5rem; vertical-align: 2px;
-      font-size: .62rem; font-weight: 800; letter-spacing: .1em; text-transform: uppercase;
-      color: var(--gold-deep); border: 1px solid var(--gold); border-radius: 999px;
-      padding: .12rem .5rem;
-    }
-    .menu-item-desc { display: block; margin-top: .2rem; font-size: var(--t-sm); color: var(--ink-soft); }
-    .menu-dots { flex: 1; border-bottom: 2px dotted rgba(30,21,8,.3); transform: translateY(-4px); min-width: 20px; }
-    .menu-price { font-family: var(--font-display); font-weight: 900; font-size: var(--t-base); font-variant-numeric: tabular-nums; white-space: nowrap; }
-    .nabidka-cta { text-align: center; margin-top: clamp(2rem, 4vw, 3rem); }
-    .nabidka-note { margin-top: 1rem; font-size: var(--t-xs); color: var(--ink-soft); font-style: italic; }
-
-    /* ── QUOTE ── */
-    .quote-block {
-      padding: var(--pad) var(--gutter);
-      position: relative; overflow: hidden;
-      text-align: center;
-    }
-    .quote-inner { position: relative; max-width: 900px; margin: 0 auto; }
-    .quote-text {
-      font-family: var(--font-display); font-weight: 700;
-      font-size: clamp(1.6rem, 3.6vw, 2.9rem);
-      line-height: 1.28; color: var(--ink);
-    }
-    .quote-text em { font-style: italic; color: var(--cream); }
-    .quote-attr {
-      margin-top: 1.6rem;
-      font-size: var(--t-xs); font-weight: 600;
-      letter-spacing: .18em; text-transform: uppercase;
-      color: var(--ink-soft);
+    @media (max-width: 640px) {
+      .polaroid { width: clamp(145px, 42vw, 220px); padding: 7px 7px 0; }
+      .polaroid:nth-child(even) { margin-top: 1.5rem; }
     }
 
     /* ── PŘEDOBJEDNÁVKA ── */
-    .objednavka { padding: var(--pad) var(--gutter); }
+    .objednavka { padding: var(--pad) var(--gutter); background: var(--bg-dark); }
+    .objednavka .body-text { color: rgba(240,235,225,.62); }
+    .objednavka .step-body strong { color: var(--text-inv); }
+    .objednavka .step-body span { color: rgba(240,235,225,.45); }
+    .objednavka .form-card { border: none; box-shadow: 0 34px 80px rgba(0,0,0,.4); }
     .objednavka-inner {
-      max-width: 1200px; margin: 0 auto;
-      display: grid; grid-template-columns: 1fr 1fr;
-      gap: clamp(2.5rem, 6vw, 6rem); align-items: start;
+      max-width: 1100px; margin: 0 auto;
+      display: grid; grid-template-columns: 1fr 1.1fr;
+      gap: clamp(3rem,6vw,6rem); align-items: start;
     }
-    @media (max-width: 900px) { .objednavka-inner { grid-template-columns: 1fr; } }
-    .objednavka .body-text { margin-top: 1.2rem; font-size: var(--t-base); line-height: 1.7; color: var(--ink-soft); max-width: 52ch; margin-left: auto; margin-right: auto; }
-    .steps { margin-top: 2.2rem; display: grid; gap: 1.4rem; }
-    .step { display: flex; gap: 1.1rem; align-items: baseline; }
-    .step-num { font-family: var(--font-display); font-weight: 900; font-style: italic; font-size: var(--t-2xl); color: var(--cream); line-height: 1; }
-    .step-body strong { display: block; color: var(--ink); font-weight: 600; font-size: var(--t-base); }
-    .step-body span   { display: block; margin-top: .15rem; font-size: var(--t-sm); color: var(--ink-soft); }
+    @media (max-width: 820px) { .objednavka-inner { grid-template-columns: 1fr; } }
+    .steps { margin-top: 2rem; display: flex; flex-direction: column; gap: 1.4rem; }
+    .step { display: flex; gap: 1.1rem; align-items: flex-start; }
+    .step-num {
+      font-family: var(--font-display);
+      font-size: 1.4rem; font-weight: 900; color: var(--primary);
+      line-height: 1; flex-shrink: 0; width: 2rem;
+    }
+    .step-body strong { display: block; font-size: var(--t-sm); font-weight: 600; margin-bottom: .2rem; }
+    .step-body span { font-size: var(--t-xs); color: var(--muted); line-height: 1.55; }
 
     .form-card {
-      background: var(--card); border-radius: 14px;
-      padding: clamp(1.5rem, 3.5vw, 2.5rem);
-      box-shadow: 0 24px 60px rgba(0,0,0,.35);
-      display: grid; gap: 1.1rem;
+      background: #fff;
+      border: 1px solid var(--border); border-radius: 4px;
+      padding: clamp(1.5rem,3vw,2.5rem);
+      box-shadow: 0 24px 60px rgba(23,20,14,.08);
     }
-    .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1.1rem; }
-    @media (max-width: 560px) { .form-row { grid-template-columns: 1fr; } }
-    .form-field { display: grid; gap: .4rem; }
-    .form-field label { font-size: var(--t-xs); font-weight: 600; letter-spacing: .1em; text-transform: uppercase; color: var(--ink-soft); }
+    .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+    @media (max-width: 520px) { .form-row { grid-template-columns: 1fr; } }
+    .form-field { margin-bottom: 1.1rem; }
+    .form-field label {
+      display: block;
+      font-size: .68rem; font-weight: 600;
+      letter-spacing: .12em; text-transform: uppercase;
+      color: var(--muted); margin-bottom: .4rem;
+    }
     .form-field input, .form-field select, .form-field textarea {
-      font-family: var(--font-body); font-size: 16px;
-      color: var(--ink); background: #fff;
-      border: 1.5px solid rgba(30,21,8,.2); border-radius: 8px;
-      padding: .8rem .95rem; width: 100%;
-      transition: border-color .25s ease, box-shadow .25s ease;
+      width: 100%;
+      font-family: var(--font-body); font-size: var(--t-sm);
+      padding: .8rem .95rem;
+      border: 1px solid var(--border); border-radius: 2px;
+      background: var(--bg); color: var(--text);
+      transition: border-color .3s ease, box-shadow .3s ease;
     }
     .form-field input:focus, .form-field select:focus, .form-field textarea:focus {
-      outline: none; border-color: var(--gold-deep);
-      box-shadow: 0 0 0 3px rgba(200,150,74,.25);
+      outline: none; border-color: var(--primary);
+      box-shadow: 0 0 0 3px rgba(198,139,60,.15);
     }
-    .form-note { font-size: var(--t-xs); color: var(--ink-soft); font-style: italic; line-height: 1.5; }
-
-    /* ── ÚVOD foto pás ── */
-    .uvod-photo { padding: 0 var(--gutter) clamp(2.5rem, 5vw, 4rem); display: flex; justify-content: center; }
-    .uvod-photo figure {
-      width: min(1100px, 100%);
-      background: var(--cream);
-      padding: 12px 12px 6px;
-      box-shadow: 0 18px 44px rgba(23,17,10,.18);
-      transform: rotate(-.4deg);
-    }
-    .uvod-photo img {
-      width: 100%; aspect-ratio: 21 / 9; object-fit: cover; display: block;
-      filter: contrast(1.02) saturate(.95);
-    }
-    @media (max-width: 640px) { .uvod-photo img { aspect-ratio: 4 / 3; } .uvod-photo figure { transform: none; } }
-    .uvod-photo figcaption {
-      padding: .55rem 0 .5rem; text-align: center;
-      font-family: var(--font-script); font-size: clamp(1rem, 1.7vw, 1.35rem);
-      color: var(--ink-soft);
-    }
+    .form-note { font-size: var(--t-xs); color: var(--muted); margin-top: .9rem; line-height: 1.5; }
 
     /* ── QUICK LINKS ── */
-    .quick { border-top: 1.5px solid rgba(30,21,8,.2); padding: clamp(3rem, 6vw, 4.5rem) var(--gutter); position: relative; overflow: hidden; }
-    .quick-wheat { position: absolute; pointer-events: none; }
-    .quick-wheat svg { width: 100%; height: 100%; }
-    .qw1 { width: 54px; top: 12%;  left: 6%;   transform: rotate(-24deg); color: var(--cream); opacity: .85; }
-    .qw2 { width: 34px; bottom: 14%; left: 16%; transform: rotate(18deg);  color: var(--ink);   opacity: .32; }
-    .qw3 { width: 44px; top: 8%;   left: 47%;  transform: rotate(32deg);  color: var(--ink);   opacity: .38; }
-    .qw4 { width: 30px; bottom: 10%; right: 30%; transform: rotate(-15deg); color: var(--cream); opacity: .8; }
-    .qw5 { width: 58px; top: 18%;  right: 5%;  transform: rotate(21deg);  color: var(--cream); opacity: .85; }
-    .qw6 { width: 36px; bottom: 22%; right: 13%; transform: rotate(-38deg); color: var(--ink);  opacity: .3; }
-    @media (max-width: 640px) { .qw2, .qw3, .qw6 { display: none; } }
+    .quick { background: var(--surface); padding: clamp(3.5rem,7vw,6rem) var(--gutter); border-top: 1px solid var(--border); }
     .quick-inner {
       max-width: 1000px; margin: 0 auto;
-      display: grid; grid-template-columns: repeat(3, 1fr);
-      gap: clamp(1.5rem, 4vw, 3rem);
-      text-align: center;
+      display: grid; grid-template-columns: repeat(3,1fr); gap: 2rem;
     }
-    @media (max-width: 640px) { .quick-inner { grid-template-columns: 1fr; } }
-    .quick-item { text-decoration: none; color: var(--ink); padding: 1rem; border-radius: 12px; transition: transform .35s var(--spring), background .3s ease; cursor: pointer; }
-    .quick-item:hover { transform: translateY(-5px); background: rgba(250,243,228,.35); }
-    .quick-icon { width: clamp(56px, 7vw, 74px); height: clamp(56px, 7vw, 74px); margin: 0 auto .85rem; color: var(--ink); }
-    .quick-lbl { font-family: 'Kaushan Script', var(--font-script), cursive; font-weight: 400; font-size: clamp(1.35rem, 2.2vw, 1.8rem); padding-right: .18em; }
-    .quick-sub { margin-top: .25rem; font-size: var(--t-sm); color: var(--ink-soft); }
+    @media (max-width: 680px) { .quick-inner { grid-template-columns: 1fr; } }
+    .quick-item {
+      display: flex; flex-direction: column; align-items: center; gap: 1rem;
+      text-decoration: none; color: var(--text);
+      text-align: center;
+      transition: transform .4s var(--spring);
+    }
+    .quick-item:hover { transform: translateY(-6px); }
+    .quick-icon { width: 74px; height: 74px; color: var(--primary-deep); transition: transform .4s var(--spring); }
+    .quick-item:hover .quick-icon { transform: rotate(-5deg) scale(1.08); }
+    .quick-lbl {
+      font-size: var(--t-xs); font-weight: 600;
+      letter-spacing: .16em; text-transform: uppercase;
+    }
+    .quick-sub { font-size: var(--t-xs); color: var(--muted); font-weight: 300; margin-top: -.5rem; }
 
     /* ── KONTAKT ── */
-    .kontakt { background: var(--cream); padding: var(--pad) var(--gutter); }
+    .kontakt { padding: var(--pad) var(--gutter); }
     .kontakt-inner {
-      max-width: 1200px; margin: 0 auto;
-      display: grid; grid-template-columns: 1fr 1.1fr;
-      gap: clamp(2.5rem, 6vw, 5rem); align-items: start;
+      display: grid; grid-template-columns: 1fr 1.2fr;
+      gap: clamp(3rem,6vw,7rem);
+      max-width: 1200px; margin: 0 auto; align-items: start;
     }
-    @media (max-width: 900px) { .kontakt-inner { grid-template-columns: 1fr; } }
-    .hours { margin-top: 1.9rem; max-width: 420px; }
-    .hour-row {
-      display: flex; justify-content: space-between; align-items: baseline;
-      padding: .8rem 0; border-bottom: 1.5px solid rgba(30,21,8,.18);
-      font-size: var(--t-base);
-    }
-    .hour-day { font-weight: 600; }
-    .hour-time { font-family: var(--font-display); font-weight: 700; }
-    .hour-closed { color: var(--gold-deep); font-style: italic; }
-    .addr { margin-top: 1.6rem; display: grid; gap: .7rem; }
-    .addr-row { display: flex; align-items: center; gap: .7rem; font-size: var(--t-base); color: var(--ink-soft); }
-    .addr-row svg { stroke: var(--gold-deep); flex-shrink: 0; }
+    @media (max-width: 780px) { .kontakt-inner { grid-template-columns: 1fr; } }
     .map-wrap {
-      border-radius: 14px; overflow: hidden;
-      border: 2px solid var(--ink);
-      box-shadow: 8px 8px 0 var(--gold);
-      aspect-ratio: 16 / 11;
+      border-radius: 4px; overflow: hidden;
+      box-shadow: 0 20px 50px rgba(23,20,14,.1);
+      aspect-ratio: 4/3;
     }
-    .map-wrap iframe { width: 100%; height: 100%; border: 0; display: block; filter: sepia(.22) saturate(.85); }
+    .map-wrap iframe { width: 100%; height: 100%; border: none; display: block; filter: saturate(.85) contrast(1.02); }
     .map-nav-btn {
-      display: inline-flex; align-items: center; gap: .5rem;
-      margin-top: 1.1rem;
-      font-size: var(--t-xs); font-weight: 600; letter-spacing: .1em; text-transform: uppercase;
-      color: var(--ink); text-decoration: none;
-      border-bottom: 2px solid var(--gold);
-      padding-bottom: .2rem;
-      transition: border-color .25s ease;
+      display: inline-flex; align-items: center; gap: .6rem;
+      margin-top: 1rem;
+      font-size: var(--t-xs); font-weight: 500; letter-spacing: .08em;
+      color: var(--primary); text-decoration: none;
+      border-bottom: 1px solid transparent;
+      transition: border-color .3s ease; padding-bottom: 1px;
     }
-    .map-nav-btn:hover { border-color: var(--ink); }
+    .map-nav-btn:hover { border-color: var(--primary); }
+    .hours { margin-top: 1.75rem; }
+    .hour-row {
+      display: flex; justify-content: space-between; align-items: center;
+      padding: .8rem 0; border-bottom: 1px solid var(--border);
+      font-size: var(--t-sm);
+    }
+    .hour-row:first-child { border-top: 1px solid var(--border); }
+    .hour-day { color: var(--muted); font-weight: 300; }
+    .hour-time { font-weight: 500; }
+    .hour-closed { color: var(--muted); font-style: italic; font-weight: 300; }
+    .addr { margin-top: 2rem; display: flex; flex-direction: column; gap: .85rem; }
+    .addr-row { display: flex; align-items: center; gap: .8rem; font-size: var(--t-base); font-weight: 300; }
+    .addr-row svg { stroke: var(--primary); flex-shrink: 0; }
 
     /* ── FOOTER ── */
     footer {
-      padding: clamp(3rem, 6vw, 4.5rem) var(--gutter) clamp(2rem, 4vw, 3rem);
-      text-align: center;
+      background: var(--bg-dark);
+      padding: 2.5rem var(--gutter);
+      display: flex; justify-content: space-between; align-items: center;
+      flex-wrap: wrap; gap: 1rem;
     }
-    .footer-logo { width: 84px; margin: 0 auto; color: var(--ink); }
-    .footer-logo svg { width: 100%; height: auto; }
-    .footer-brand {
-      display: inline-block;
-      margin-top: 1.2rem;
-      font-family: 'Kaushan Script', var(--font-script), cursive; font-weight: 400;
-      font-size: clamp(1.5rem, 3vw, 2.3rem); letter-spacing: 0;
-      background: var(--cream); color: var(--ink);
-      padding: .5rem 1.8rem .65rem; border-radius: 10px;
-    }
-    .footer-brand em { font-style: normal; color: var(--gold-deep); }
-    .footer-addr { margin-top: 1.4rem; font-size: var(--t-sm); color: var(--ink-soft); }
-    .footer-line { width: min(560px, 80%); height: 1.5px; background: rgba(30,21,8,.25); margin: 1.8rem auto; }
-    .footer-meta { font-size: var(--t-xs); letter-spacing: .08em; color: var(--ink-soft); }
-    .footer-ksh { margin-top: .5rem; font-size: var(--t-xs); color: var(--ink-soft); }
-    .footer-ksh a { color: var(--ink); font-weight: 600; text-decoration: none; border-bottom: 1px solid var(--ink-faint); }
-    .footer-ksh a:hover { border-color: var(--ink); }
+    .footer-left { display: flex; align-items: center; gap: 1rem; }
+    .footer-logo { width: 44px; height: 55px; color: var(--primary); opacity: .9; }
+    .footer-logo svg { width: 100%; height: 100%; }
+    .footer-brand { font-family: var(--font-script); font-size: 1.5rem; color: var(--text-inv); }
+    .footer-brand em { color: var(--primary); font-style: normal; }
+    .footer-meta { font-size: var(--t-xs); color: #3D3830; letter-spacing: .05em; }
+    .footer-ksh { font-size: var(--t-xs); color: #3D3830; }
+    .footer-ksh a { color: var(--primary); text-decoration: none; }
 
-    /* ── produktové karty (objednávka) ── */
-    .shop-cat-grid { display: grid; gap: .95rem; margin-top: 1rem; }
-    .p-card2 {
-      background: #FFFDF8; border-radius: 12px;
-      border: 1.5px solid rgba(30,21,8,.12);
-      display: flex; align-items: stretch; overflow: hidden;
-      min-height: 104px;
-      transition: border-color .25s ease, background .25s ease;
-    }
-    .p-card2:hover { border-color: rgba(30,21,8,.3); }
-    .p-card2.in-cart { border-color: var(--gold-deep); background: #fff; }
-    .p-info2 { flex: 1; min-width: 0; padding: 1rem 1.1rem; display: flex; flex-direction: column; gap: .3rem; }
-    .p-name2 { font-weight: 600; font-size: var(--t-base); }
-    .p-desc2 { font-size: var(--t-sm); color: var(--ink-soft); line-height: 1.45; }
-    .p-price2 { margin-top: auto; padding-top: .5rem; font-family: var(--font-display); font-weight: 900; font-size: var(--t-base); font-variant-numeric: tabular-nums; }
-    .p-media2 { position: relative; width: clamp(86px, 10vw, 112px); flex-shrink: 0; margin: .55rem; border-radius: 8px; overflow: hidden; }
-    .p-media2 img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; filter: saturate(.9); }
-    .qty-ctl { position: absolute; right: .55rem; bottom: .55rem; }
-    .p-card2.noimg { align-items: center; }
-    .p-card2.noimg .qty-ctl { position: static; margin-right: 1rem; flex-shrink: 0; }
-    .qty-add {
-      width: 36px; height: 36px; border-radius: 50%;
-      border: 1.5px solid var(--ink); background: var(--cream); color: var(--ink);
-      font-size: 1.2rem; font-weight: 600; line-height: 1;
-      display: grid; place-items: center; cursor: pointer;
-      transition: transform .2s var(--spring), background .2s ease, color .2s ease;
-    }
-    .qty-add:hover { background: var(--ink); color: var(--cream); transform: scale(1.1); }
-    .qty-pill {
-      display: flex; align-items: center; gap: .1rem;
-      background: var(--ink); color: var(--cream);
-      border-radius: 999px; padding: .15rem .25rem;
-    }
-    .qty-pill button {
-      width: 30px; height: 30px; border-radius: 50%;
-      border: none; background: transparent; color: var(--cream);
-      font-size: 1.05rem; line-height: 1; cursor: pointer;
-      display: grid; place-items: center;
-      transition: background .2s ease;
-    }
-    .qty-pill button:hover { background: rgba(250,243,228,.18); }
-    .qty-pill .q {
-      min-width: 1.6ch; text-align: center;
-      font-weight: 700; font-size: .95rem; font-variant-numeric: tabular-nums;
+
+    /* ── ZLATÝ REŽIM — od „Dnes pečeme" dál (vzor Forma: jedna barva, krémové karty) ── */
+    .sec-gold { background: var(--primary); }
+    .sec-gold .label { color: var(--bg-dark); opacity: .78; }
+    .sec-gold .block-title { color: var(--bg-dark); }
+    .sec-gold .block-title em { color: var(--bg); }
+    .sec-gold .body-text { color: rgba(23,20,14,.78); font-weight: 400; }
+    .sec-gold .stat { border-color: rgba(23,20,14,.3); }
+    .sec-gold .stat-num { color: var(--bg-dark); }
+    .sec-gold .stat-lbl { color: rgba(23,20,14,.62); }
+    .sec-gold .section-stamp { color: var(--bg-dark); opacity: .85; }
+    .sec-gold .pecivo-note, .sec-gold .nabidka-sub { color: rgba(23,20,14,.7); }
+    .sec-gold .nabidka-note { color: rgba(23,20,14,.62); }
+    .sec-gold .quick-icon { color: var(--bg-dark); }
+    .sec-gold .quick-lbl { color: var(--bg-dark); }
+    .sec-gold .quick-sub { color: rgba(23,20,14,.62); }
+    .sec-gold.quick { border-top-color: rgba(23,20,14,.18); }
+    .sec-gold .hour-row { border-color: rgba(23,20,14,.28); }
+    .sec-gold .hour-row:first-child { border-top-color: rgba(23,20,14,.28); }
+    .sec-gold .hour-day, .sec-gold .hour-closed { color: rgba(23,20,14,.62); }
+    .sec-gold .hour-time { color: var(--bg-dark); }
+    .sec-gold .addr-row { color: rgba(23,20,14,.85); }
+    .sec-gold .addr-row svg { stroke: var(--bg-dark); }
+    .sec-gold .map-nav-btn { color: var(--bg-dark); border-bottom-color: transparent; }
+    .sec-gold .map-nav-btn:hover { border-bottom-color: var(--bg-dark); }
+    .sec-gold .story-img { box-shadow: 0 34px 80px rgba(23,20,14,.3); }
+    /* ceník jako krémový lístek na zlaté */
+    .menu-sheet {
+      background: var(--bg); border-radius: 4px;
+      padding: clamp(1.75rem, 4vw, 3.5rem);
+      box-shadow: 0 34px 80px rgba(23,20,14,.28);
     }
 
-    /* ── KONTAKT plakát (stejná forma jako úvod) ── */
-    .kontakt-sec { padding: clamp(2.2rem, 5vw, 4rem) var(--gutter) var(--pad); display: flex; justify-content: center; }
-    .k-photo { margin-top: clamp(1.2rem, 2.5vw, 1.8rem); }
-    .k-photo img { width: 100%; aspect-ratio: 16 / 8.5; object-fit: cover; display: block; border-radius: 8px; }
-    .k-photo figcaption { margin-top: .6rem; font-family: var(--font-script); font-size: clamp(1rem, 1.6vw, 1.3rem); color: var(--ink-soft); }
-    .k-hours { margin: clamp(1.2rem, 2.5vw, 1.8rem) auto 0; max-width: 440px; text-align: left; }
-    .k-addr { margin-top: 1.2rem; display: grid; gap: .55rem; justify-items: center; }
-    .k-addr .addr-row { justify-content: center; }
-
-    /* ── KONTAKT (foto hero + krémový pás + 3 sloupce) ── */
-    .k-hero { padding: clamp(1.5rem, 3.5vw, 3rem) var(--gutter) 0; position: relative; }
-    .k-hero img {
-      width: 100%; max-width: 1200px; margin: 0 auto;
-      height: clamp(300px, 44vw, 540px); object-fit: cover; display: block;
+    /* ── REVEAL ── */
+    .rev {
+      opacity: 0; transform: translateY(28px);
+      transition: opacity .85s var(--ease), transform .85s var(--ease);
     }
-    .k-hero-box {
-      position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
-      background: var(--cream);
-      padding: clamp(1rem, 2.5vw, 1.8rem) clamp(2rem, 5vw, 4rem);
-      box-shadow: 0 14px 40px rgba(23,17,10,.3);
-    }
-    .k-hero-box .t {
-      font-family: 'Kaushan Script', var(--font-script), cursive;
-      font-size: clamp(2rem, 5vw, 3.8rem);
-      color: var(--gold-deep); line-height: 1.15;
-      padding-right: .18em; /* dojezd švihu písma */
-    }
-    .k-note {
-      background: var(--cream);
-      margin-top: clamp(1.5rem, 3.5vw, 3rem);
-      padding: clamp(2rem, 4.5vw, 3.2rem) var(--gutter);
-      text-align: center;
-    }
-    .k-note p { font-size: var(--t-base); line-height: 1.7; color: var(--ink-soft); max-width: 62ch; margin: 0 auto; }
-    .k-note p + p { margin-top: .5rem; }
-    .k-cols {
-      max-width: 1200px; margin: 0 auto;
-      padding: var(--pad) var(--gutter) clamp(2rem, 4.5vw, 3.5rem);
-      display: grid; grid-template-columns: repeat(3, 1fr);
-      gap: clamp(2rem, 5vw, 4rem);
-    }
-    @media (max-width: 820px) { .k-cols { grid-template-columns: 1fr; } }
-    .k-col-title {
-      font-family: 'Kaushan Script', var(--font-script), cursive; font-weight: 400;
-      font-size: clamp(1.45rem, 2.5vw, 2.1rem);
-      color: var(--cream); line-height: 1.2;
-      margin-bottom: 1rem;
-      padding-right: .18em;
-    }
-    .k-col p, .k-col .addr-row { font-size: var(--t-base); line-height: 1.85; color: rgba(30,21,8,.85); }
-    .k-col .note-i { font-style: italic; color: var(--ink-soft); }
-    .k-col a.k-link {
-      display: inline-flex; align-items: center; gap: .45rem;
-      margin-top: .9rem;
-      font-size: var(--t-xs); font-weight: 600; letter-spacing: .1em; text-transform: uppercase;
-      color: var(--ink); text-decoration: none;
-      border-bottom: 2px solid var(--cream); padding-bottom: .2rem;
-      transition: border-color .25s ease;
-    }
-    .k-col a.k-link:hover { border-color: var(--ink); }
-    .k-map { max-width: 1200px; margin: 0 auto; padding: 0 var(--gutter) var(--pad); }
-    .k-map .map-wrap { box-shadow: 10px 10px 0 var(--cream); aspect-ratio: 16 / 7; }
-    @media (max-width: 640px) { .k-map .map-wrap { aspect-ratio: 4 / 3; } }
-
-    /* ── E-SHOP předobjednávka ── */
-    .objednavka-head { max-width: 900px; margin: 0 auto; text-align: center; }
-    .objednavka-head .body-text { margin-top: 1.4rem; font-size: var(--t-base); line-height: 1.7; color: rgba(242,234,217,.78); max-width: 52ch; }
-    .steps-row { margin: 2rem auto 0; max-width: 1200px; display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.4rem; }
-    @media (max-width: 760px) { .steps-row { grid-template-columns: 1fr; } }
-
-    .shop-card {
-      max-width: 1200px; margin: clamp(2rem, 4vw, 3rem) auto 0;
-      background: var(--card); border-radius: 14px;
-      box-shadow: 0 24px 60px rgba(23,17,10,.2);
-      display: grid; grid-template-columns: 1.45fr 1fr;
-      overflow: hidden;
-    }
-    @media (max-width: 900px) { .shop-card { grid-template-columns: 1fr; } }
-    .shop-products { padding: clamp(1.5rem, 3.5vw, 2.5rem); }
-    .shop-cat + .shop-cat { margin-top: clamp(1.6rem, 3vw, 2.2rem); }
-    .shop-cat-title {
-      display: flex; align-items: center; gap: .7rem;
-      font-family: 'Kaushan Script', var(--font-script), cursive; font-weight: 400;
-      font-size: clamp(1.3rem, 2.1vw, 1.7rem);
-      padding-bottom: .55rem; border-bottom: 2px solid var(--ink);
-    }
-    .shop-item {
-      display: flex; align-items: center; gap: .9rem;
-      padding: .85rem 0; border-bottom: 1px solid rgba(30,21,8,.14);
-    }
-    .shop-item:last-child { border-bottom: none; }
-    .shop-item-info { flex: 1; min-width: 0; }
-    .shop-item-name { font-weight: 600; font-size: var(--t-base); }
-    .shop-item-desc { display: block; margin-top: .1rem; font-size: var(--t-sm); color: var(--ink-soft); }
-    .shop-item-price { font-family: var(--font-display); font-weight: 900; font-size: var(--t-base); font-variant-numeric: tabular-nums; white-space: nowrap; }
-    .stepper { display: flex; align-items: center; gap: .15rem; }
-    .stepper button {
-      width: 34px; height: 34px; border-radius: 50%;
-      border: 1.5px solid var(--ink); background: transparent;
-      color: var(--ink); font-size: 1.05rem; font-weight: 600; line-height: 1;
-      cursor: pointer; display: grid; place-items: center;
-      transition: background .2s ease, color .2s ease, transform .2s var(--spring);
-    }
-    .stepper button:hover { background: var(--ink); color: var(--cream); transform: scale(1.08); }
-    .stepper button:disabled { opacity: .25; pointer-events: none; }
-    .stepper .qty {
-      min-width: 2ch; text-align: center;
-      font-family: var(--font-display); font-weight: 900; font-size: var(--t-base);
-      font-variant-numeric: tabular-nums;
-    }
-    .shop-item.in-cart .shop-item-name { color: var(--gold-deep); }
-
-    .shop-side {
-      background: var(--cream);
-      border-left: 2px dashed rgba(30,21,8,.2);
-      padding: clamp(1.5rem, 3.5vw, 2.5rem);
-      display: grid; gap: 1.1rem; align-content: start;
-    }
-    @media (max-width: 900px) { .shop-side { border-left: none; border-top: 2px dashed rgba(30,21,8,.2); } }
-    .shop-side-title {
-      font-family: 'Kaushan Script', var(--font-script), cursive;
-      font-size: clamp(1.4rem, 2.3vw, 1.9rem);
-      color: var(--gold-deep); text-align: center;
-      padding-right: .18em;
-    }
-    .cart-list { display: grid; gap: .45rem; min-height: 3rem; }
-    .cart-empty { font-size: var(--t-sm); color: var(--ink-soft); font-style: italic; text-align: center; padding: .8rem 0; }
-    .cart-row { display: flex; align-items: baseline; gap: .6rem; font-size: var(--t-sm); }
-    .cart-row .c-name { flex-shrink: 1; }
-    .cart-row .c-dots { flex: 1; border-bottom: 2px dotted rgba(30,21,8,.3); transform: translateY(-3px); min-width: 12px; }
-    .cart-row .c-sum { font-weight: 600; font-variant-numeric: tabular-nums; white-space: nowrap; }
-    .cart-total {
-      display: flex; justify-content: space-between; align-items: baseline;
-      border-top: 2px solid var(--ink); padding-top: .8rem;
-      font-family: var(--font-display); font-weight: 900; font-size: var(--t-lg);
-    }
-    .cart-total .t-sum { font-size: var(--t-2xl); font-variant-numeric: tabular-nums; }
-    .shop-success { text-align: center; padding: 1.5rem 0; display: grid; gap: 1rem; justify-items: center; }
-    .shop-success .ok-stamp { width: 92px; color: var(--gold-deep); }
-    .shop-success strong { font-family: var(--font-display); font-size: var(--t-lg); }
-    .shop-success p { font-size: var(--t-sm); color: var(--ink-soft); }
-
-    /* ── ADMIN (lokální ukázka správy obsahu) ── */
-    .admin { padding: var(--pad) var(--gutter); max-width: 1020px; margin: 0 auto; }
-    .admin-head { text-align: center; }
-    .admin-sub { margin: .9rem auto 0; color: var(--ink-soft); font-size: var(--t-sm); max-width: 56ch; line-height: 1.6; }
-    .admin-card {
-      background: var(--card); border-radius: 14px;
-      padding: clamp(1.5rem, 3vw, 2.2rem);
-      box-shadow: 0 24px 60px rgba(23,17,10,.18);
-      margin-top: 1.6rem;
-    }
-    .admin-card h3 {
-      font-family: 'Kaushan Script', var(--font-script), cursive;
-      font-weight: 400; font-size: clamp(1.3rem, 2.2vw, 1.7rem);
-      color: var(--gold-deep); margin-bottom: 1.2rem; padding-right: .18em;
-    }
-    .a-news-item {
-      display: grid; grid-template-columns: 1fr 1fr 40px; gap: .7rem; align-items: end;
-      padding: .7rem 0; border-bottom: 1px dashed rgba(30,21,8,.18);
-    }
-    .a-prod {
-      display: grid; grid-template-columns: 1.5fr 92px 140px 84px 40px; gap: .7rem; align-items: end;
-      padding: .7rem 0; border-bottom: 1px solid rgba(30,21,8,.1);
-    }
-    .a-prod .a-desc { grid-column: 1 / -1; }
-    .a-cat-head { margin: 1.4rem 0 .3rem; font-weight: 800; font-size: var(--t-xs); letter-spacing: .14em; text-transform: uppercase; color: var(--ink-soft); }
-    .a-cat-head:first-child { margin-top: 0; }
-    .a-grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: .9rem; }
-    @media (max-width: 720px) {
-      .a-news-item { grid-template-columns: 1fr 40px; }
-      .a-prod { grid-template-columns: 1fr 92px 40px; }
-      .a-grid2 { grid-template-columns: 1fr; }
-    }
-    .a-check { display: flex; align-items: center; gap: .45rem; font-size: var(--t-xs); font-weight: 600; letter-spacing: .08em; text-transform: uppercase; color: var(--ink-soft); padding-bottom: .7rem; cursor: pointer; white-space: nowrap; }
-    .a-check input { width: 17px; height: 17px; accent-color: var(--gold-deep); cursor: pointer; }
-    .btn-mini {
-      font-size: .68rem; font-weight: 700; letter-spacing: .1em; text-transform: uppercase;
-      color: var(--ink); background: transparent;
-      border: 1.5px solid var(--ink); border-radius: 999px;
-      padding: .5rem 1rem; cursor: pointer; margin-top: 1rem;
-      transition: background .2s ease, color .2s ease;
-    }
-    .btn-mini:hover { background: var(--ink); color: var(--cream); }
-    .btn-del {
-      width: 34px; height: 34px; border-radius: 50%; align-self: end; margin-bottom: .35rem;
-      border: none; background: transparent; color: var(--ink-faint);
-      font-size: 1.1rem; cursor: pointer; transition: color .2s ease, background .2s ease;
-    }
-    .btn-del:hover { color: #A63C2E; background: rgba(166,60,46,.1); }
-    .a-actions { display: flex; gap: 1rem; justify-content: center; align-items: center; margin-top: 1.8rem; flex-wrap: wrap; }
-    .a-reset { font-size: var(--t-xs); color: var(--ink-soft); background: none; border: none; cursor: pointer; text-decoration: underline; }
-    .a-reset:hover { color: var(--ink); }
-    #a-toast {
-      position: fixed; left: 50%; bottom: 26px; z-index: 300;
-      transform: translate(-50%, 16px); opacity: 0; pointer-events: none;
-      background: var(--ink); color: var(--cream);
-      padding: .85rem 1.5rem; border-radius: 999px;
-      font-size: .82rem; font-weight: 600; letter-spacing: .08em;
-      transition: opacity .35s ease, transform .35s var(--spring);
-    }
-    #a-toast.on { opacity: 1; transform: translate(-50%, 0); }
-
-    @media (prefers-reduced-motion: reduce) {
-      *, *::before, *::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; }
-      .mast-word .w { opacity: 1 !important; transform: none !important; }
-      .draw { stroke-dashoffset: 0; }
-      .fade-in, .mast-script { opacity: 1; }
-      html { scroll-behavior: auto; }
-    }
+    .rev.vis { opacity: 1; transform: none; }
+    .d1 { transition-delay: .1s; }
+    .d2 { transition-delay: .2s; }
+    .d3 { transition-delay: .3s; }
   </style>
 </head>
 <body>
 
-    <svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <!-- Linocut SVG symboly (použité přes <use>) -->
+  <svg width="0" height="0" style="position:absolute" aria-hidden="true">
     <defs>
-      <!-- klas — jeden stonek, používaný 3× v logu -->
-      <g id="stalk" fill="none">
-        <line x1="0" y1="184" x2="0" y2="127" stroke="currentColor" stroke-width="2.2"/>
-        <ellipse cx="0" cy="120" rx="2.1" ry="5.5" stroke="currentColor" stroke-width="1.3"/>
-        <ellipse cx="-4.6" cy="131" rx="4.4" ry="1.7" transform="rotate(-40 -4.6 131)" stroke="currentColor" stroke-width="1.3"/>
-        <ellipse cx="4.6"  cy="131" rx="4.4" ry="1.7" transform="rotate(40 4.6 131)"  stroke="currentColor" stroke-width="1.3"/>
-        <ellipse cx="-4.6" cy="141" rx="4.4" ry="1.7" transform="rotate(-40 -4.6 141)" stroke="currentColor" stroke-width="1.3"/>
-        <ellipse cx="4.6"  cy="141" rx="4.4" ry="1.7" transform="rotate(40 4.6 141)"  stroke="currentColor" stroke-width="1.3"/>
-        <ellipse cx="-4.6" cy="151" rx="4.4" ry="1.7" transform="rotate(-40 -4.6 151)" stroke="currentColor" stroke-width="1.3"/>
-        <ellipse cx="4.6"  cy="151" rx="4.4" ry="1.7" transform="rotate(40 4.6 151)"  stroke="currentColor" stroke-width="1.3"/>
-        <ellipse cx="-4.6" cy="161" rx="4.4" ry="1.7" transform="rotate(-40 -4.6 161)" stroke="currentColor" stroke-width="1.3"/>
-        <ellipse cx="4.6"  cy="161" rx="4.4" ry="1.7" transform="rotate(40 4.6 161)"  stroke="currentColor" stroke-width="1.3"/>
-      </g>
-      <!-- logo pekárny — věrná vektorizace originálu klienta (logo-original.jpg) -->
-      <symbol id="logo-full" viewBox="0 0 200 250" fill="none">
-        <path id="arc" d="M 38,118 A 62,62 0 0 1 162,118"/>
-        <circle cx="100" cy="118" r="76" stroke="currentColor" stroke-width="1.6"/>
-        <text font-family="Great Vibes, Dancing Script, cursive" font-size="28" fill="currentColor">
-          <textPath href="#arc" startOffset="50%" text-anchor="middle">Jako Dřív</textPath>
-        </text>
-        <path d="M 56 136 L 100 74 L 144 136" stroke="currentColor" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"/>
-        <rect x="122" y="88" width="10" height="25" fill="currentColor"/>
-        <line x1="61" y1="133" x2="61" y2="186" stroke="currentColor" stroke-width="7"/>
-        <line x1="139" y1="133" x2="139" y2="186" stroke="currentColor" stroke-width="7"/>
-        <use href="#stalk" transform="translate(79 2)"/>
-        <use href="#stalk" transform="translate(100 2)"/>
-        <use href="#stalk" transform="translate(121 2)"/>
-        <text x="100" y="224" text-anchor="middle" font-family="Georgia,'Times New Roman',serif" font-size="13" letter-spacing="5.5" fill="currentColor">PEKAŘSTVÍ</text>
-        <line x1="64" y1="232" x2="136" y2="232" stroke="currentColor" stroke-width="1"/>
-        <text x="100" y="245" text-anchor="middle" font-size="9" fill="currentColor">♥</text>
-      </symbol>
       <!-- klas -->
       <g id="lino-wheat">
         <path d="M50 92 V30" stroke="currentColor" stroke-width="3.5" stroke-linecap="round"/>
@@ -890,429 +761,407 @@
         <circle cx="50" cy="50" r="15" fill="none" stroke="currentColor" stroke-width="6"/>
         <circle cx="68" cy="32" r="4.5" fill="currentColor"/>
       </g>
+      <!-- facebook čtverec -->
+      <g id="lino-fb">
+        <rect x="18" y="18" width="64" height="64" rx="16" fill="none" stroke="currentColor" stroke-width="6"/>
+        <path d="M56 76 V50 h9 l2 -11 h-11 v-7 q0 -4 5 -4 h7 V20 h-10 q-14 0 -14 14 v5 h-9 v11 h9 v26 z" fill="currentColor"/>
+      </g>
     </defs>
   </svg>
 
-
-  <!-- ══ MASTHEAD ══ -->
-  <header class="masthead">
-    <div class="mast-logo" aria-hidden="true">
-      <svg viewBox="0 0 200 200" fill="none">
-        <defs><path id="mast-arc" d="M 38,118 A 62,62 0 0 1 162,118"/></defs>
-        <circle class="draw" cx="100" cy="118" r="76" stroke="currentColor" stroke-width="1.6"/>
-        <text class="fade-in fd1" font-family="Dancing Script, cursive" font-size="26" font-weight="500" fill="currentColor">
-          <textPath href="#mast-arc" startOffset="50%" text-anchor="middle">Jako Dřív</textPath>
-        </text>
-        <path class="draw dd2" d="M 56 136 L 100 74 L 144 136" stroke="currentColor" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"/>
-        <line class="draw dd2" x1="61" y1="133" x2="61" y2="186" stroke="currentColor" stroke-width="7"/>
-        <line class="draw dd2" x1="139" y1="133" x2="139" y2="186" stroke="currentColor" stroke-width="7"/>
-        <rect class="fade-in fd2" x="122" y="88" width="10" height="25" fill="currentColor"/>
-        <g class="fade-in fd2">
-          <use href="#stalk" transform="translate(79 2)"/>
-          <use href="#stalk" transform="translate(100 2)"/>
-          <use href="#stalk" transform="translate(121 2)"/>
-        </g>
-      </svg>
+  <!-- ── NAV ── -->
+  <nav>
+    <div class="nav-left">
+      <a href="#dnes" class="nav-link">Dnes pečeme</a>
+      <div class="nav-sep"></div>
+      <a href="#nabidka" class="nav-link">Nabídka</a>
+      <div class="nav-sep"></div>
+      <a href="#story" class="nav-link">Příběh</a>
+      <div class="nav-sep"></div>
+      <a href="#kontakt" class="nav-link">Kontakt</a>
     </div>
-    <p class="mast-script">Pekařství</p>
-    <h1 class="mast-word">
-      <span class="w" id="w1"><em>Jako</em></span> <span class="w" id="w2">Dřív</span>
-    </h1>
-  </header>
-
-  <!-- ══ NAV BAR ══ -->
-  <div class="topbar-wrap">
-    <nav class="topbar" aria-label="Hlavní navigace">
-      <a href="#uvod" data-nav>Úvod</a>
-      <a href="#pribeh" data-nav>Příběh</a>
-      <a href="#nabidka" data-nav>Nabídka</a>
-      <a href="#zpece" data-nav>Z pece</a>
-      <a href="#kontakt" data-nav>Kontakt</a>
-      <a href="#objednat" data-nav>Předobjednat</a>
-    </nav>
-  </div>
-
-  <main id="views">
-
-    <!-- ══ VIEW: ÚVOD ══ -->
-    <section class="view" data-view="uvod" aria-label="Úvod">
-      <div class="banner-wrap">
-        <article class="banner">
-          <div class="banner-wheat bw1 stamp"><svg viewBox="0 0 100 100"><use href="#lino-wheat"/></svg></div>
-          <div class="banner-wheat bw2 stamp"><svg viewBox="0 0 100 100"><use href="#lino-wheat"/></svg></div>
-          <h2 class="banner-title">Čerstvé aktuality</h2>
-          <div class="banner-items">
-            <div class="banner-item hot">
-              <strong>Borůvkové koláče — sezóna je tady</strong>
-              <span>s drobenkou, jen do vyprodání</span>
-            </div>
-            <div class="banner-item">
-              <strong>Spouštíme online předobjednávky</strong>
-              <span>objednejte do 15:00, ráno si vyzvednete bez fronty</span>
-            </div>
-            <div class="banner-item">
-              <strong>Otevřeno každý všední den od 7:00</strong>
-              <span>pečeme, dokud nevyprodáme</span>
-            </div>
-          </div>
-        </article>
+    <div class="nav-right">
+      <a href="#kontakt" class="nav-cta">Kde nás najdete</a>
+      <div class="nav-logo-mark">
+        <div class="logo-mask"></div>
       </div>
+    </div>
+  </nav>
 
-      <section class="quote-block">
-        <div class="quote-inner">
-          <blockquote class="quote-text">
-            Chléb je nejstarší recept na světě.<br>My ho pečeme tak, <em>aby to bylo cítit.</em>
-          </blockquote>
-          <p class="quote-attr">Pekařství Jako Dřív &mdash; Jindřichův Hradec</p>
-        </div>
-      </section>
-
-      <div class="uvod-photo">
-        <figure>
-          <img src="photo-heic.jpg" alt="Pult pekárny s koši čerstvého pečiva" loading="lazy" style="object-position:35% 42%">
-          <figcaption>každé ráno čerstvě napečeno</figcaption>
-        </figure>
+  <!-- ── HERO ── -->
+  <section class="hero">
+    <div class="hero-bg"></div>
+    <div class="hero-overlay"></div>
+    <div class="hero-content">
+      <div class="hero-logo" aria-hidden="true">
+        <div class="logo-mask"></div>
       </div>
-
-      <section class="quick">
-        <div class="quick-wheat qw1" aria-hidden="true"><svg viewBox="0 0 100 100"><use href="#lino-wheat"/></svg></div>
-        <div class="quick-wheat qw2" aria-hidden="true"><svg viewBox="0 0 100 100"><use href="#lino-wheat"/></svg></div>
-        <div class="quick-wheat qw3" aria-hidden="true"><svg viewBox="0 0 100 100"><use href="#lino-wheat"/></svg></div>
-        <div class="quick-wheat qw4" aria-hidden="true"><svg viewBox="0 0 100 100"><use href="#lino-wheat"/></svg></div>
-        <div class="quick-wheat qw5" aria-hidden="true"><svg viewBox="0 0 100 100"><use href="#lino-wheat"/></svg></div>
-        <div class="quick-wheat qw6" aria-hidden="true"><svg viewBox="0 0 100 100"><use href="#lino-wheat"/></svg></div>
-        <div class="quick-inner">
-          <a href="https://www.instagram.com/pekarstvi_jakodriv/" target="_blank" rel="noopener" class="quick-item">
-            <div class="quick-icon stamp"><svg viewBox="0 0 100 100"><use href="#lino-ig"/></svg></div>
-            <div class="quick-lbl">Instagram</div>
-            <div class="quick-sub">sledujte, co právě vyndáváme z pece</div>
-          </a>
-          <a href="#kontakt" class="quick-item">
-            <div class="quick-icon stamp"><svg viewBox="0 0 100 100"><use href="#lino-pin"/></svg></div>
-            <div class="quick-lbl">Kde nás najdete</div>
-            <div class="quick-sub">Jindřichův Hradec</div>
-          </a>
-          <a href="#objednat" class="quick-item">
-            <div class="quick-icon stamp"><svg viewBox="0 0 100 100"><use href="#lino-loaf"/></svg></div>
-            <div class="quick-lbl">Předobjednat</div>
-            <div class="quick-sub">ať na vás zbyde</div>
-          </a>
-        </div>
-      </section>
-    </section>
-
-    <!-- ══ VIEW: PŘÍBĚH ══ -->
-    <section class="view" data-view="pribeh" aria-label="Příběh pekárny">
-      <div class="story">
-        <div class="story-inner">
-          <div>
-            <p class="label">O nás &middot; Poctivé řemeslo</p>
-            <h2 class="block-title">Pečeme tak,<br><em>jak to bývávalo</em></h2>
-            <div class="body-text">
-              <p>Pekárna Jako Dřív vznikla z jednoduché myšlenky — vrátit chléb zpět tam, kde patří. Na stůl, k rodině, voňavý a poctivý.</p>
-              <p>Pracujeme s přirozeným kváskem, který si každý den krmíme. Žádné umělé přísady, žádné zkratky. Jen mouka, voda, kvásek a čas.</p>
-              <p>Najdete nás v Jindřichově Hradci na Klášterské ulici — a poznáte nás po vůni.</p>
-            </div>
-            <div class="stats">
-              <div class="stat">
-                <div class="stat-num">7:00</div>
-                <div class="stat-lbl">Otevíráme ráno</div>
-              </div>
-              <div class="stat">
-                <div class="stat-num">24 h</div>
-                <div class="stat-lbl">Kynutí kvásku</div>
-              </div>
-              <div class="stat">
-                <div class="stat-num">100%</div>
-                <div class="stat-lbl">Přírodní suroviny</div>
-              </div>
-            </div>
-          </div>
-          <div class="story-photos">
-            <figure class="story-photo ph1">
-              <img src="photo-heic.jpg" alt="Prodejna pekárny — koše s čerstvým pečivem u pece" style="object-position:40% 30%">
-              <figcaption class="story-photo-tag">u pultu, hned vedle pece</figcaption>
-            </figure>
-            <figure class="story-photo ph2">
-              <img src="croissants.jpg" alt="Police s čerstvě upečenými chleby">
-              <figcaption class="story-photo-tag">chleby zrají na polici</figcaption>
-            </figure>
-          </div>
-        </div>
+      <p class="hero-eyebrow" id="ey">Pekařství</p>
+      <h1 class="hero-h1">
+        <span class="w" id="w1">Jako</span>&nbsp;<span class="w" id="w2"><em>dřív.</em></span>
+      </h1>
+      <p class="hero-sub" id="hs">
+        Rodinná pekárna manželů Illeových v Klášterské ulici. Recepty prověřené staletími, poctivé suroviny — a křupavé rohlíky přímo z horkého plechu, každý den od sedmi ráno.
+      </p>
+      <div class="hero-ctas" id="hc">
+        <a href="#dnes" class="btn-gold">
+          Co dnes pečeme
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+        </a>
+        <a href="#story" class="btn-ghost">Náš příběh</a>
       </div>
-    </section>
+    </div>
+    <div class="hero-scroll" id="hsc">
+      <div class="scroll-line"></div>
+      <span>Scroll</span>
+    </div>
+  </section>
 
-    <!-- ══ VIEW: NABÍDKA ══ -->
-    <section class="view" data-view="nabidka" aria-label="Stálá nabídka">
-      <div class="nabidka">
-        <div class="nabidka-head">
-          <p class="label">Stálá nabídka &middot; Peče se denně</p>
-          <h2 class="block-title xl">Co u nás<br><em>najdete</em></h2>
-          <p class="nabidka-sub">Nabídka se mění podle sezóny — tohle peče pekárna pořád.</p>
-        </div>
-
-        <div class="menu-sheet">
-          <div class="menu-grid">
-            <div>
-              <div class="menu-cat">
-                <div class="menu-cat-title">
-                  <div class="cat-stamp stamp"><svg viewBox="0 0 100 100"><use href="#lino-loaf"/></svg></div>
-                  Chléb
-                </div>
-                <div class="menu-item">
-                  <div>
-                    <span class="menu-item-name">Kváskový pšenično-žitný<span class="menu-tag">kvásek</span></span>
-                    <span class="menu-item-desc">náš základ — 24 hodin zrání, křupavá kůrka</span>
-                  </div>
-                  <div class="menu-dots"></div>
-                  <div class="menu-price">65 Kč</div>
-                </div>
-                <div class="menu-item">
-                  <div>
-                    <span class="menu-item-name">Žitný celozrnný<span class="menu-tag">kvásek</span></span>
-                    <span class="menu-item-desc">hutný, vydrží celý týden</span>
-                  </div>
-                  <div class="menu-dots"></div>
-                  <div class="menu-price">72 Kč</div>
-                </div>
-                <div class="menu-item">
-                  <div>
-                    <span class="menu-item-name">Podmáslový bochník</span>
-                    <span class="menu-item-desc">jemná střída, recept po babičce</span>
-                  </div>
-                  <div class="menu-dots"></div>
-                  <div class="menu-price">58 Kč</div>
-                </div>
-              </div>
-
-              <div class="menu-cat">
-                <div class="menu-cat-title">
-                  <div class="cat-stamp stamp"><svg viewBox="0 0 100 100"><use href="#lino-pretzel"/></svg></div>
-                  Běžné pečivo
-                </div>
-                <div class="menu-item">
-                  <div><span class="menu-item-name">Rohlík poctivý</span></div>
-                  <div class="menu-dots"></div>
-                  <div class="menu-price">5 Kč</div>
-                </div>
-                <div class="menu-item">
-                  <div><span class="menu-item-name">Houska s mákem</span></div>
-                  <div class="menu-dots"></div>
-                  <div class="menu-price">6 Kč</div>
-                </div>
-                <div class="menu-item">
-                  <div><span class="menu-item-name">Dalamánek žitný</span></div>
-                  <div class="menu-dots"></div>
-                  <div class="menu-price">9 Kč</div>
-                </div>
-              </div>
-            </div>
-
-            <div>
-              <div class="menu-cat">
-                <div class="menu-cat-title">
-                  <div class="cat-stamp stamp"><svg viewBox="0 0 100 100"><use href="#lino-oven"/></svg></div>
-                  Sladké
-                </div>
-                <div class="menu-item">
-                  <div>
-                    <span class="menu-item-name">Máslový croissant<span class="menu-tag">máslo</span></span>
-                    <span class="menu-item-desc">48 vrstev, pravé máslo</span>
-                  </div>
-                  <div class="menu-dots"></div>
-                  <div class="menu-price">32 Kč</div>
-                </div>
-                <div class="menu-item">
-                  <div>
-                    <span class="menu-item-name">Koláč dle sezóny</span>
-                    <span class="menu-item-desc">tvaroh, mák, povidla, ovoce</span>
-                  </div>
-                  <div class="menu-dots"></div>
-                  <div class="menu-price">28 Kč</div>
-                </div>
-                <div class="menu-item">
-                  <div><span class="menu-item-name">Loupák máslový</span></div>
-                  <div class="menu-dots"></div>
-                  <div class="menu-price">14 Kč</div>
-                </div>
-                <div class="menu-item">
-                  <div><span class="menu-item-name">Buchta domácí</span></div>
-                  <div class="menu-dots"></div>
-                  <div class="menu-price">22 Kč</div>
-                </div>
-              </div>
-
-              <div class="menu-cat">
-                <div class="menu-cat-title">
-                  <div class="cat-stamp stamp"><svg viewBox="0 0 100 100"><use href="#lino-wheat"/></svg></div>
-                  Svačinky
-                </div>
-                <div class="menu-item">
-                  <div>
-                    <span class="menu-item-name">Obložený dalamánek</span>
-                    <span class="menu-item-desc">šunka od kosti, čerstvá zelenina</span>
-                  </div>
-                  <div class="menu-dots"></div>
-                  <div class="menu-price">45 Kč</div>
-                </div>
-                <div class="menu-item">
-                  <div><span class="menu-item-name">Svačinový balíček pro děti</span></div>
-                  <div class="menu-dots"></div>
-                  <div class="menu-price">39 Kč</div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div class="nabidka-cta">
-          <a href="#objednat" class="btn-dark">Předobjednat pečivo</a>
-          <p class="nabidka-note">Ukázková nabídka — finální položky a ceny doplní pekárna.</p>
-        </div>
-      </div>
-    </section>
-
-    <!-- ══ VIEW: Z PECE (galerie) ══ -->
-    <section class="view" data-view="zpece" aria-label="Z naší pece">
-      <section class="gallery">
-        <div class="gallery-head">
-          <div>
-            <p class="label">Z naší pece &middot; Každé ráno jinak</p>
-            <h2 class="block-title on-cream">Vypečená<br><em>galerie</em></h2>
-          </div>
-          <p class="gallery-note">Nabídka se mění podle sezóny a nálady pekaře — přijďte, nikdy nevíte, co skvělého čeká.</p>
-        </div>
-        <div class="gallery-strip">
-          <figure class="g-card">
-            <img src="svaciny.jpg" alt="Zlaté máslové croissanty na talíři" loading="lazy">
-            <figcaption>Máslové croissanty</figcaption>
-          </figure>
-          <figure class="g-card">
-            <img src="croissants.jpg" alt="Police s čerstvě upečenými chleby" loading="lazy">
-            <figcaption>Kváskové chleby</figcaption>
-          </figure>
-          <figure class="g-card">
-            <img src="rolls.jpg" alt="Sladké rohlíky a káva — svačinky" loading="lazy" style="object-position:center 40%">
-            <figcaption>Svačinky</figcaption>
-          </figure>
-          <figure class="g-card">
-            <img src="photo-heic.jpg" alt="Výběr čerstvého pečiva v prodejně" loading="lazy" style="object-position:40% 20%">
-            <figcaption>Čerstvé pečivo</figcaption>
-          </figure>
-          <figure class="g-card">
-            <img src="extra.jpg" alt="Čerstvé buchty z pece" loading="lazy" style="object-position:center 35%">
-            <figcaption>Buchty &amp; sladké</figcaption>
-          </figure>
-          <div class="g-brand">
-            <div class="g-brand-script">vaše svačinky<br>= naše radost</div>
-            <div class="g-brand-sep"></div>
-            <div class="g-brand-sub">Pekařství Jako Dřív</div>
-          </div>
-        </div>
-      </section>
-    </section>
-
-    <!-- ══ VIEW: PŘEDOBJEDNAT ══ -->
-    <section class="view" data-view="objednat" aria-label="Předobjednávka">
-      <div class="objednavka">
-        <div class="objednavka-head">
-          <p class="label">Předobjednávky &middot; Na zítřek do 15:00</p>
-          <h2 class="block-title">Ať na vás <em>zbyde</em></h2>
-          <div class="body-text">
-            <p>Nejlepší kousky bývají do devíti pryč. Vyberte si, co vám máme upéct, a ráno si vyzvednete bez fronty.</p>
-          </div>
-        </div>
-        <div class="steps-row">
-          <div class="step">
-            <div class="step-num">1.</div>
-            <div class="step-body">
-              <strong>Naklikejte si pečivo</strong>
-              <span>kolik kusů čeho chcete</span>
-            </div>
-          </div>
-          <div class="step">
-            <div class="step-num">2.</div>
-            <div class="step-body">
-              <strong>Objednejte do 15:00</strong>
-              <span>na následující den, přijde vám potvrzení</span>
-            </div>
-          </div>
-          <div class="step">
-            <div class="step-num">3.</div>
-            <div class="step-body">
-              <strong>Vyzvedněte si</strong>
-              <span>ráno v pekárně — bez fronty, bez čekání</span>
-            </div>
-          </div>
-        </div>
-
-        <div class="shop-card">
-          <div class="shop-products" id="shop-products"><!-- generováno JS --></div>
-          <aside class="shop-side">
-            <div class="shop-side-title">Vaše objednávka</div>
-            <div class="cart-list" id="cart-list">
-              <div class="cart-empty">Zatím nic nevybráno — naklikejte si pečivo vedle.</div>
-            </div>
-            <div class="cart-total">
-              <span>Celkem</span>
-              <span class="t-sum" id="cart-total">0 Kč</span>
-            </div>
-            <form id="shop-form" onsubmit="return false" style="display:grid;gap:1.1rem">
-              <div class="form-field">
-                <label for="f-name">Jméno</label>
-                <input id="f-name" type="text" placeholder="Jana Nováková" autocomplete="name">
-              </div>
-              <div class="form-field">
-                <label for="f-tel">Telefon</label>
-                <input id="f-tel" type="tel" placeholder="777 123 456" autocomplete="tel">
-              </div>
-              <div class="form-field">
-                <label for="f-den">Den vyzvednutí</label>
-                <select id="f-den">
-                  <option>Zítra — čtvrtek 16. 7.</option>
-                  <option>Pátek 17. 7.</option>
-                </select>
-              </div>
-              <button type="submit" class="btn-dark" style="width:100%;justify-content:center" id="shop-submit">Odeslat předobjednávku</button>
-              <p class="form-note">Ukázka — objednávky napojíme na systém pekárny. Objednávka jim přijde e-mailem a vám potvrzení.</p>
-            </form>
-          </aside>
-        </div>
-      </div>
-    </section>
-
-    <!-- ══ VIEW: KONTAKT ══ -->
-    <section class="view" data-view="kontakt" aria-label="Kontakt">
-      <div class="k-hero">
-        <img src="extra.jpg" alt="Čerstvé buchty z pece" style="object-position:center 40%">
-        <div class="k-hero-box"><h2 class="t">Kontakt</h2></div>
-      </div>
-
-      <div class="k-note">
-        <p>Předobjednávky na zítřek přijímáme každý den <strong>do 15:00</strong>.</p>
-        <p>U větších objednávek (nad 10 kusů) nám prosím dejte vědět alespoň den předem. Děkujeme!</p>
-      </div>
-
-      <div class="k-cols">
-        <div class="k-col">
-          <h3 class="k-col-title">Adresa</h3>
-          <p>Klášterská 92<br>377 01 Jindřichův Hradec</p>
-          <a class="k-link" href="https://maps.google.com/maps?q=Klášterská+92,+377+01+Jindřichův+Hradec" target="_blank" rel="noopener">
-            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><polygon points="3 11 22 2 13 21 11 13 3 11"/></svg>
-            Navigovat sem
-          </a>
-        </div>
-        <div class="k-col">
-          <h3 class="k-col-title">Kontakt</h3>
-          <p id="c-lines" class="note-i">— telefonní číslo doplníme —<br>— e-mail doplníme —</p>
-        </div>
-        <div class="k-col">
-          <h3 class="k-col-title">Otevírací doba</h3>
-          <p id="c-hours">Pondělí – Pátek &nbsp;·&nbsp; 7:00 – do vyprodání<br>Sobota – Neděle &nbsp;·&nbsp; <span class="note-i">zavřeno</span></p>
+  <!-- ── DNES PEČEME ── -->
+  <section class="dnes" id="dnes">
+    <div class="dnes-inner">
+      <div>
+        <p class="dnes-label rev">Tabule u pultu &middot; čerstvé zprávy z pece</p>
+        <h2 class="dnes-title rev d1">Dnes<br><em>pečeme</em></h2>
+        <p class="dnes-text rev d2">
+          Každý den je nabídka trochu jiná — podle sezóny a nálady pekaře.
+          Na tabuli u pultu najdete, kdy co zavoní z pece. Luboš peče od noci
+          a přes den přidává na regály další várky.
+        </p>
+        <div class="dnes-wheat rev d3 stamp">
+          <svg viewBox="0 0 100 100"><use href="#lino-wheat"/></svg>
         </div>
       </div>
 
-      <div class="k-map">
+      <div class="rev d2">
+      <div class="board">
+        <div class="board-stamp">
+          <div class="logo-mask"></div>
+        </div>
+        <div class="board-head">
+          <div class="board-title">Kdy to dnes zavoní</div>
+          <div class="board-date">čtvrtek 24. 7.</div>
+        </div>
+        <div class="board-row">
+          <div class="board-item">
+            <strong>Chléb žitný kvas</strong>
+            <span>70 % žito &middot; 30 % pšenice</span>
+          </div>
+          <div class="board-price">70 Kč</div>
+        </div>
+        <div class="board-row">
+          <div class="board-item">
+            <strong>Babiččin štrůdl</strong>
+            <span>500 g &middot; podle rodinného receptu</span>
+          </div>
+          <div class="board-price">50 Kč</div>
+        </div>
+        <div class="board-row">
+          <div class="board-item">
+            <strong>Rohlíky z horkého plechu</strong>
+            <span>peče se několikrát denně</span>
+          </div>
+          <div class="board-price">5 Kč</div>
+        </div>
+        <div class="board-cta">
+          <div class="board-note">Pečivo nezamlouváme — nezlobte se ♥</div>
+          <a href="#nabidka" class="btn-dark">Celá nabídka</a>
+        </div>
+      </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── PŘÍBĚH ── -->
+  <section class="story sec-gold" id="story">
+    <div class="story-inner">
+      <div>
+        <p class="label rev">Náš příběh &middot; Rodinná pekárna</p>
+        <h2 class="block-title rev d1">Pečeme tak,<br><em>jak to bývávalo</em></h2>
+        <div class="body-text rev d2">
+          <p>Za pekárnou stojíme my, Lucie a Luboš Illeovi. Luboš se vyučil pekařem ve Volyni, řemeslu se věnuje přes 25 let a pochází z rodiny, která mívala mlýn. Celý život chodil v Hradci kolem pekárny, ze které voněly čerstvé rohlíky — až jsme si loni řekli: kdy jindy než teď.</p>
+          <p>Začalo to vánočkami na předobjednávku, strhla se lavina — a ta nás nese dodnes. Zatímco město ještě spí, Luboš už peče, a ráno v sedm otevíráme s plnými regály.</p>
+          <p>Pečeme podle receptů prověřených staletími, z poctivých surovin. Prostě jako dřív.</p>
+        </div>
+        <div class="stats rev d3">
+          <div class="stat">
+            <div class="stat-num">25+</div>
+            <div class="stat-lbl">Let pekařského řemesla</div>
+          </div>
+          <div class="stat">
+            <div class="stat-num">7:00</div>
+            <div class="stat-lbl">Otevíráme každé ráno</div>
+          </div>
+          <div class="stat">
+            <div class="stat-num">100%</div>
+            <div class="stat-lbl">Poctivé suroviny</div>
+          </div>
+        </div>
+        <div class="section-stamp stamp rev d3"><svg viewBox="0 0 100 100"><use href="#lino-pretzel"/></svg></div>
+      </div>
+      <div class="story-img rev d2">
+        <img src="foto/manzele.jpg" alt="Lucie a Luboš Illeovi ve své pekárně pod dřevěným logem">
+        <div class="story-img-tag">Lucie &amp; Luboš Illeovi</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── NABÍDKA / CENÍK ── -->
+  <section class="nabidka sec-gold" id="nabidka">
+    <div class="nabidka-inner">
+      <div class="nabidka-head">
+        <p class="label rev">Stálá nabídka &middot; Peče se denně</p>
+        <h2 class="block-title xl rev d1">Co u nás<br><em>najdete</em></h2>
+        <p class="nabidka-sub rev d2">Nabídka se mění podle sezóny — tohle peče pekárna pořád.</p>
+      </div>
+      <div class="menu-sheet">
+      <div class="menu-grid">
+        <div>
+          <div class="menu-cat rev">
+            <div class="menu-cat-title">
+              <div class="cat-stamp stamp"><svg viewBox="0 0 100 100"><use href="#lino-loaf"/></svg></div>
+              Chléb
+            </div>
+            <div class="menu-item">
+              <div>
+                <span class="menu-item-name">Kváskový pšenično-žitný<span class="menu-tag">kvásek</span></span>
+                <span class="menu-item-desc">náš základ — 24 hodin zrání, křupavá kůrka</span>
+              </div>
+              <div class="menu-dots"></div>
+              <div class="menu-price">65 Kč</div>
+            </div>
+            <div class="menu-item">
+              <div>
+                <span class="menu-item-name">Žitný celozrnný<span class="menu-tag">kvásek</span></span>
+                <span class="menu-item-desc">hutný, vydrží celý týden</span>
+              </div>
+              <div class="menu-dots"></div>
+              <div class="menu-price">72 Kč</div>
+            </div>
+            <div class="menu-item">
+              <div>
+                <span class="menu-item-name">Podmáslový bochník</span>
+                <span class="menu-item-desc">jemná střída, recept po babičce</span>
+              </div>
+              <div class="menu-dots"></div>
+              <div class="menu-price">58 Kč</div>
+            </div>
+          </div>
+
+          <div class="menu-cat rev d1">
+            <div class="menu-cat-title">
+              <div class="cat-stamp stamp"><svg viewBox="0 0 100 100"><use href="#lino-pretzel"/></svg></div>
+              Běžné pečivo
+            </div>
+            <div class="menu-item">
+              <div><span class="menu-item-name">Rohlík poctivý</span></div>
+              <div class="menu-dots"></div>
+              <div class="menu-price">5 Kč</div>
+            </div>
+            <div class="menu-item">
+              <div><span class="menu-item-name">Houska s mákem</span></div>
+              <div class="menu-dots"></div>
+              <div class="menu-price">6 Kč</div>
+            </div>
+            <div class="menu-item">
+              <div><span class="menu-item-name">Dalamánek žitný</span></div>
+              <div class="menu-dots"></div>
+              <div class="menu-price">9 Kč</div>
+            </div>
+          </div>
+        </div>
+
+        <div>
+          <div class="menu-cat rev d1">
+            <div class="menu-cat-title">
+              <div class="cat-stamp stamp"><svg viewBox="0 0 100 100"><use href="#lino-oven"/></svg></div>
+              Sladké
+            </div>
+            <div class="menu-item">
+              <div>
+                <span class="menu-item-name">Máslový croissant<span class="menu-tag">máslo</span></span>
+                <span class="menu-item-desc">48 vrstev, pravé máslo</span>
+              </div>
+              <div class="menu-dots"></div>
+              <div class="menu-price">32 Kč</div>
+            </div>
+            <div class="menu-item">
+              <div>
+                <span class="menu-item-name">Koláč dle sezóny</span>
+                <span class="menu-item-desc">tvaroh, mák, povidla, ovoce</span>
+              </div>
+              <div class="menu-dots"></div>
+              <div class="menu-price">28 Kč</div>
+            </div>
+            <div class="menu-item">
+              <div><span class="menu-item-name">Loupák máslový</span></div>
+              <div class="menu-dots"></div>
+              <div class="menu-price">14 Kč</div>
+            </div>
+            <div class="menu-item">
+              <div><span class="menu-item-name">Buchta domácí</span></div>
+              <div class="menu-dots"></div>
+              <div class="menu-price">22 Kč</div>
+            </div>
+          </div>
+
+          <div class="menu-cat rev d2">
+            <div class="menu-cat-title">
+              <div class="cat-stamp stamp"><svg viewBox="0 0 100 100"><use href="#lino-wheat"/></svg></div>
+              Svačinky
+            </div>
+            <div class="menu-item">
+              <div>
+                <span class="menu-item-name">Obložený dalamánek</span>
+                <span class="menu-item-desc">šunka od kosti, čerstvá zelenina</span>
+              </div>
+              <div class="menu-dots"></div>
+              <div class="menu-price">45 Kč</div>
+            </div>
+            <div class="menu-item">
+              <div><span class="menu-item-name">Svačinový balíček pro děti</span></div>
+              <div class="menu-dots"></div>
+              <div class="menu-price">39 Kč</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      </div>
+      <div class="nabidka-cta rev">
+        <p class="nabidka-note">Ukázková nabídka — finální položky a ceny doplní pekárna.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── KÁVA — Nordbeans ── -->
+  <section class="kava" id="kava">
+    <div class="kava-inner">
+      <div class="rev">
+      <a class="kava-img" href="https://www.nordbeans.cz/" target="_blank" rel="noopener" title="Výběrová káva Nordbeans">
+        <img src="foto/nordbeans-wildfox.png" alt="Sáček výběrové kávy Nordbeans — Wild Fox Espresso z Brazílie">
+        <span class="kava-img-tag">Wild Fox Espresso &middot; Brazílie</span>
+      </a>
+      </div>
+      <div>
+        <p class="label rev">Ke každé buchtě &middot; Výběrová káva</p>
+        <h2 class="block-title rev d1">A k tomu<br><em>dobrá káva</em></h2>
+        <div class="body-text rev d2">
+          <p>Kávu nám praží liberecká výběrová pražírna <a href="https://www.nordbeans.cz/" target="_blank" rel="noopener" class="kava-link">Nordbeans</a> — espresso i kávu s sebou připravujeme z čerstvě pražených zrn.</p>
+          <p>Čerstvě umletá káva a koláč ještě teplý z pece. Víc ráno nepotřebujete.</p>
+        </div>
+        <a href="https://www.nordbeans.cz/" target="_blank" rel="noopener" class="btn-dark rev d3" style="margin-top:2.25rem">Objevit pražírnu Nordbeans</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── PEČIVO GRID ── -->
+  <section class="pecivo sec-gold">
+    <div class="pecivo-head">
+      <div>
+        <p class="label rev">Z naší pece &middot; Každé ráno jinak</p>
+        <h2 class="block-title xl rev d1">Vypečená<br><em>galerie</em></h2>
+      </div>
+      <p class="pecivo-note rev d2">Nabídka se mění podle sezóny a nálady pekaře — přijďte, nikdy nevíte, co skvělého čeká.</p>
+    </div>
+    <div class="polaroid-wall rev">
+      <figure class="polaroid" style="--r:-2.8deg; --tr:-3deg">
+        <div class="tape"></div>
+        <img src="foto/chleb-kvas.jpg" alt="Kvasové chleby na dřevěných policích" loading="lazy" style="object-position:center 55%">
+        <figcaption>chléb žitný kvas</figcaption>
+      </figure>
+      <figure class="polaroid" style="--r:2.2deg; --tr:2deg">
+        <div class="tape"></div>
+        <img src="foto/croissanty.jpg" alt="Zlaté máslové croissanty" loading="lazy" style="object-position:center 60%">
+        <figcaption>máslové croissanty</figcaption>
+      </figure>
+      <figure class="polaroid" style="--r:-1.6deg; --tr:4deg">
+        <div class="tape"></div>
+        <img src="foto/boruvky.jpg" alt="Plech borůvkových koláčků s drobenkou" loading="lazy" style="object-position:center 65%">
+        <figcaption>borůvkové koláčky</figcaption>
+      </figure>
+      <figure class="polaroid" style="--r:3deg; --tr:-2.5deg">
+        <div class="tape"></div>
+        <img src="foto/pekar.jpg" alt="Luboš Ille u pece s plechem čerstvých housek" loading="lazy" style="object-position:20% center">
+        <figcaption>Luboš u pece</figcaption>
+      </figure>
+      <figure class="polaroid" style="--r:-2.4deg; --tr:1.5deg">
+        <div class="tape"></div>
+        <img src="foto/strudl.jpg" alt="Babiččin štrůdl s cedulkou" loading="lazy" style="object-position:center 60%">
+        <figcaption>babiččin štrůdl</figcaption>
+      </figure>
+      <figure class="polaroid" style="--r:1.8deg; --tr:-4deg">
+        <div class="tape"></div>
+        <img src="foto/kolac-rybiz.jpg" alt="Rybízový koláč s drobenkou" loading="lazy" style="object-position:center 45%">
+        <figcaption>rybízový koláč</figcaption>
+      </figure>
+      <figure class="polaroid" style="--r:-3.2deg; --tr:3deg">
+        <div class="tape"></div>
+        <img src="foto/flatlay.jpg" alt="Skořicoví šneci, jahody a zapečené bagetky" loading="lazy" style="object-position:center 40%">
+        <figcaption>snídaně jako dřív</figcaption>
+      </figure>
+      <figure class="polaroid" style="--r:2.6deg; --tr:-1.5deg">
+        <div class="tape"></div>
+        <img src="foto/velikonoce.jpg" alt="Velikonoční mazance s visačkou pekárny" loading="lazy" style="object-position:center 70%">
+        <figcaption>mazance na Velikonoce</figcaption>
+      </figure>
+      <figure class="polaroid" style="--r:-1.4deg; --tr:2.5deg">
+        <div class="tape"></div>
+        <img src="foto/vyroba.jpg" alt="Luboš zakládá plech do pece" loading="lazy" style="object-position:center 30%">
+        <figcaption>další várka do pece</figcaption>
+      </figure>
+    </div>
+  </section>
+
+  <!-- ── QUICK LINKS ── -->
+  <section class="quick sec-gold">
+    <div class="quick-inner">
+      <a href="https://www.instagram.com/pekarstvi_jakodriv/" target="_blank" rel="noopener" class="quick-item rev">
+        <div class="quick-icon stamp"><svg viewBox="0 0 100 100"><use href="#lino-ig"/></svg></div>
+        <div class="quick-lbl">Sledujte nás</div>
+        <div class="quick-sub">co právě vyndáváme z pece</div>
+      </a>
+      <a href="#kontakt" class="quick-item rev d1">
+        <div class="quick-icon stamp"><svg viewBox="0 0 100 100"><use href="#lino-pin"/></svg></div>
+        <div class="quick-lbl">Kde nás najdete</div>
+        <div class="quick-sub">Jindřichův Hradec</div>
+      </a>
+      <a href="https://www.facebook.com/p/Peka%C5%99stv%C3%AD-JAKO-D%C5%98%C3%8DV-61577256286078/" target="_blank" rel="noopener" class="quick-item rev d2">
+        <div class="quick-icon stamp"><svg viewBox="0 0 100 100"><use href="#lino-fb"/></svg></div>
+        <div class="quick-lbl">Jsme na Facebooku</div>
+        <div class="quick-sub">novinky &amp; sezónní pečení</div>
+      </a>
+    </div>
+  </section>
+
+  <!-- ── KONTAKT ── -->
+  <section class="kontakt sec-gold" id="kontakt">
+    <div class="kontakt-inner">
+      <div>
+        <p class="label rev">Kde nás najdete &middot; Jindřichův Hradec</p>
+        <h2 class="block-title rev d1">Přijďte se<br><em>podívat</em></h2>
+        <div class="hours rev d2" style="margin-top:1.75rem">
+          <p class="label" style="margin-bottom:.6rem;font-size:.65rem">Otevírací doba</p>
+          <div class="hour-row">
+            <span class="hour-day">Pondělí – Pátek</span>
+            <span class="hour-time">7:00 – do vyprodání</span>
+          </div>
+          <div class="hour-row">
+            <span class="hour-day">Sobota – Neděle</span>
+            <span class="hour-time hour-closed">Zavřeno</span>
+          </div>
+        </div>
+        <div class="addr rev d2" style="margin-top:1.5rem">
+          <div class="addr-row">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+            Klášterská 92, 377 01 Jindřichův Hradec
+          </div>
+          <div class="addr-row">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12a19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 3.6 1.19h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 8.91A16 16 0 0 0 14 14.91l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 15.92z"/></svg>
+            <a href="tel:+420603785009" style="color:inherit;text-decoration:none">603 785 009</a>
+          </div>
+        </div>
+      </div>
+      <div class="rev d2">
         <div class="map-wrap">
           <iframe
             src="https://maps.google.com/maps?q=Klášterská+92,+377+01+Jindřichův+Hradec&output=embed&hl=cs&z=16"
@@ -1321,367 +1170,56 @@
             title="Mapa — Pekařství Jako Dřív"
           ></iframe>
         </div>
+        <a
+          href="https://maps.google.com/maps?q=Klášterská+92,+377+01+Jindřichův+Hradec"
+          target="_blank" rel="noopener"
+          class="map-nav-btn"
+        >
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><polygon points="3 11 22 2 13 21 11 13 3 11"/></svg>
+          Navigovat sem
+        </a>
       </div>
-    </section>
+    </div>
+  </section>
 
-    <!-- ══ VIEW: ADMIN (skrytá ukázka správy — #admin) ══ -->
-    <section class="view" data-view="admin" aria-label="Administrace">
-      <div class="admin">
-        <div class="admin-head">
-          <p class="label">Ukázka pro pekárnu &middot; Administrace</p>
-          <h2 class="block-title">Správa <em>webu</em></h2>
-          <p class="admin-sub">Aktuality, nabídku, ceny i kontakty si pekárna upraví sama — bez programátora.
-          Tohle je ukázková verze: změny se ukládají v tomto prohlížeči a hned se propíší do webu.</p>
-        </div>
-        <div id="admin-root"></div>
-      </div>
-    </section>
-
-  </main>
-
-  <!-- ══ FOOTER ══ -->
+  <!-- ── FOOTER ── -->
   <footer>
-    <div class="footer-logo"><svg viewBox="0 0 200 250"><use href="#logo-full"/></svg></div>
-    <div class="footer-brand">Jako <em>Dřív</em></div>
-    <p class="footer-addr">Klášterská 92, 377 01 Jindřichův Hradec</p>
-    <div class="footer-line"></div>
+    <div class="footer-left">
+      <div class="footer-logo"><div class="logo-mask"></div></div>
+      <div class="footer-brand">Jako <em>Dřív</em> Pekařství</div>
+    </div>
     <div class="footer-meta">© 2026 Pekařství Jako Dřív &mdash; Jindřichův Hradec</div>
     <div class="footer-ksh">Web vytvořilo <a href="https://ksh-partners.cz" target="_blank" rel="noopener">KSH studio</a></div>
   </footer>
 
   <script>
-    // ── klikací router: hash -> view ──
-    const VIEWS = [...document.querySelectorAll('.view')];
-    const NAVLINKS = [...document.querySelectorAll('.topbar a')];
-    const topbar = document.querySelector('.topbar-wrap');
-
-    function show(name, scroll) {
-      const target = VIEWS.some(v => v.dataset.view === name) ? name : 'uvod';
-      VIEWS.forEach(v => {
-        v.classList.remove('active');
-        if (v.dataset.view === target) {
-          void v.offsetWidth; // restart vstupní animace
-          v.classList.add('active');
-        }
-      });
-      NAVLINKS.forEach(a => {
-        if (a.getAttribute('href') === '#' + target) a.setAttribute('aria-current', 'page');
-        else a.removeAttribute('aria-current');
-      });
-      if (scroll) {
-        const barTop = topbar.offsetTop;
-        if (window.scrollY > barTop) window.scrollTo({ top: barTop, behavior: 'smooth' });
-      }
+    // Sticky nav
+    const nav = document.querySelector('nav');
+    const threshold = window.innerHeight * 0.8;
+    function updateNav() {
+      nav.classList.toggle('nav-solid', window.scrollY > threshold);
     }
+    window.addEventListener('scroll', updateNav, { passive: true });
+    updateNav();
 
-    window.addEventListener('hashchange', () => show(location.hash.slice(1), true));
-    show(location.hash.slice(1) || 'uvod', false);
-
-    // ══ DATOVÁ VRSTVA — lokální CMS demo (localStorage) ══
-    const CATS = [
-      { key: 'Chléb',        stamp: 'lino-loaf' },
-      { key: 'Běžné pečivo', stamp: 'lino-pretzel' },
-      { key: 'Sladké',       stamp: 'lino-oven' },
-      { key: 'Svačinky',     stamp: 'lino-wheat' },
-    ];
-    const DEFAULT_DATA = {
-      news: {
-        title: 'Čerstvé aktuality',
-        items: [
-          { t: 'Borůvkové koláče — sezóna je tady', s: 's drobenkou, jen do vyprodání' },
-          { t: 'Spouštíme online předobjednávky', s: 'objednejte do 15:00, ráno si vyzvednete bez fronty' },
-          { t: 'Otevřeno každý všední den od 7:00', s: 'pečeme, dokud nevyprodáme' },
-        ],
-      },
-      products: [
-        { id:'kvaskovy',  cat:'Chléb', name:'Kváskový pšenično-žitný', desc:'24 hodin zrání, křupavá kůrka · 900 g', price:65, tag:'kvásek', img:'croissants.jpg', active:true },
-        { id:'zitny',     cat:'Chléb', name:'Žitný celozrnný', desc:'hutný, vydrží celý týden', price:72, tag:'kvásek', active:true },
-        { id:'podmaslovy',cat:'Chléb', name:'Podmáslový bochník', desc:'jemná střída, recept po babičce', price:58, tag:'', active:true },
-        { id:'rohlik',    cat:'Běžné pečivo', name:'Rohlík poctivý', desc:'pečený každé ráno', price:5, tag:'', img:'photo-heic.jpg', pos:'40% 25%', active:true },
-        { id:'houska',    cat:'Běžné pečivo', name:'Houska s mákem', desc:'', price:6, tag:'', active:true },
-        { id:'dalamanek', cat:'Běžné pečivo', name:'Dalamánek žitný', desc:'', price:9, tag:'', active:true },
-        { id:'croissant', cat:'Sladké', name:'Máslový croissant', desc:'48 vrstev, pravé máslo', price:32, tag:'máslo', img:'svaciny.jpg', pos:'center 60%', active:true },
-        { id:'kolac',     cat:'Sladké', name:'Koláč dle sezóny', desc:'tvaroh, mák, povidla, ovoce', price:28, tag:'', active:true },
-        { id:'loupak',    cat:'Sladké', name:'Loupák máslový', desc:'z pravého másla', price:14, tag:'', img:'rolls.jpg', pos:'center 40%', active:true },
-        { id:'buchta',    cat:'Sladké', name:'Buchta domácí', desc:'sypaná moučkovým cukrem', price:22, tag:'', img:'extra.jpg', pos:'center 35%', active:true },
-        { id:'oblozeny',  cat:'Svačinky', name:'Obložený dalamánek', desc:'šunka od kosti, čerstvá zelenina', price:45, tag:'', active:true },
-        { id:'balicek',   cat:'Svačinky', name:'Svačinový balíček pro děti', desc:'', price:39, tag:'', active:true },
-      ],
-      contact: { phone:'', email:'', week:'7:00 – do vyprodání', weekend:'Zavřeno' },
-    };
-    const LS_KEY = 'jakodriv-data-v1';
-    function loadData() {
-      try { const raw = localStorage.getItem(LS_KEY); if (raw) return JSON.parse(raw); } catch (e) {}
-      return JSON.parse(JSON.stringify(DEFAULT_DATA));
-    }
-    function persist() { try { localStorage.setItem(LS_KEY, JSON.stringify(DATA)); } catch (e) {} }
-    let DATA = loadData();
-    const esc = s => String(s ?? '').replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
-
-    // ── render: aktuality ──
-    function renderNews() {
-      document.querySelector('.banner-title').textContent = DATA.news.title;
-      document.querySelector('.banner-items').innerHTML = DATA.news.items.map(i => `
-        <div class="banner-item">
-          <strong>${esc(i.t)}</strong>
-          ${i.s ? `<span>${esc(i.s)}</span>` : ''}
-        </div>`).join('');
-    }
-
-    // ── render: ceník ──
-    function menuCatBlock(cat) {
-      const items = DATA.products.filter(pr => pr.cat === cat.key && pr.active);
-      if (!items.length) return '';
-      return `<div class="menu-cat">
-        <div class="menu-cat-title">
-          <div class="cat-stamp stamp"><svg viewBox="0 0 100 100"><use href="#${cat.stamp}"/></svg></div>
-          ${cat.key}
-        </div>
-        ${items.map(pr => `
-        <div class="menu-item">
-          <div>
-            <span class="menu-item-name">${esc(pr.name)}${pr.tag ? `<span class="menu-tag">${esc(pr.tag)}</span>` : ''}</span>
-            ${pr.desc ? `<span class="menu-item-desc">${esc(pr.desc)}</span>` : ''}
-          </div>
-          <div class="menu-dots"></div>
-          <div class="menu-price">${pr.price} Kč</div>
-        </div>`).join('')}
-      </div>`;
-    }
-    function renderMenu() {
-      document.querySelector('.nabidka .menu-grid').innerHTML =
-        `<div>${menuCatBlock(CATS[0])}${menuCatBlock(CATS[1])}</div><div>${menuCatBlock(CATS[2])}${menuCatBlock(CATS[3])}</div>`;
-    }
-
-    // ── render: kontakt ──
-    function renderContact() {
-      const c = DATA.contact;
-      const lines = document.getElementById('c-lines');
-      lines.innerHTML = [
-        c.phone ? esc(c.phone) : '— telefonní číslo doplníme —',
-        c.email ? esc(c.email) : '— e-mail doplníme —',
-      ].join('<br>');
-      lines.classList.toggle('note-i', !c.phone && !c.email);
-      document.getElementById('c-hours').innerHTML =
-        `Pondělí – Pátek &nbsp;·&nbsp; ${esc(c.week)}<br>Sobota – Neděle &nbsp;·&nbsp; <span class="note-i">${esc(c.weekend)}</span>`;
-    }
-
-    // ── render: e-shop ──
-    const cart = new Map();
-    function qtyCtlHTML(q, name) {
-      if (q > 0) {
-        return `<div class="qty-pill">
-          <button type="button" data-minus aria-label="Ubrat ${esc(name)}">−</button>
-          <span class="q">${q}</span>
-          <button type="button" data-plus aria-label="Přidat ${esc(name)}">+</button>
-        </div>`;
-      }
-      return `<button type="button" class="qty-add" data-plus aria-label="Přidat ${esc(name)}">+</button>`;
-    }
-    function renderShop() {
-      const shopEl = document.getElementById('shop-products');
-      shopEl.innerHTML = CATS.map(c => {
-        const items = DATA.products.filter(pr => pr.cat === c.key && pr.active);
-        if (!items.length) return '';
-        return `<div class="shop-cat">
-          <div class="shop-cat-title">
-            <div class="cat-stamp stamp"><svg viewBox="0 0 100 100"><use href="#${c.stamp}"/></svg></div>
-            ${c.key}
-          </div>
-          <div class="shop-cat-grid">
-          ${items.map(it => `
-            <div class="p-card2 ${it.img ? '' : 'noimg'} ${cart.get(it.id) > 0 ? 'in-cart' : ''}" data-id="${it.id}">
-              <div class="p-info2">
-                <div class="p-name2">${esc(it.name)}</div>
-                ${it.desc ? `<div class="p-desc2">${esc(it.desc)}</div>` : ''}
-                <div class="p-price2">${it.price} Kč</div>
-              </div>
-              ${it.img
-                ? `<div class="p-media2"><img src="${it.img}" alt="${esc(it.name)}" loading="lazy"${it.pos ? ` style="object-position:${it.pos}"` : ''}><div class="qty-ctl">${qtyCtlHTML(cart.get(it.id) || 0, it.name)}</div></div>`
-                : `<div class="qty-ctl">${qtyCtlHTML(cart.get(it.id) || 0, it.name)}</div>`}
-            </div>`).join('')}
-          </div>
-        </div>`;
-      }).join('');
-    }
-    function renderCart() {
-      const list = document.getElementById('cart-list');
-      const rows = [...cart.entries()].filter(([id, q]) => q > 0 && DATA.products.some(pr => pr.id === id));
-      if (!rows.length) {
-        list.innerHTML = '<div class="cart-empty">Zatím nic nevybráno — naklikejte si pečivo vedle.</div>';
-      } else {
-        list.innerHTML = rows.map(([id, q]) => {
-          const it = DATA.products.find(pr => pr.id === id);
-          return `<div class="cart-row"><span class="c-name">${q}× ${esc(it.name)}</span><span class="c-dots"></span><span class="c-sum">${q * it.price} Kč</span></div>`;
-        }).join('');
-      }
-      const total = rows.reduce((s, [id, q]) => s + q * DATA.products.find(pr => pr.id === id).price, 0);
-      document.getElementById('cart-total').textContent = total + ' Kč';
-      return total;
-    }
-    document.getElementById('shop-products').addEventListener('click', e => {
-      const btn = e.target.closest('button');
-      if (!btn) return;
-      const card = btn.closest('.p-card2');
-      const id = card.dataset.id;
-      const it = DATA.products.find(pr => pr.id === id);
-      let q = cart.get(id) || 0;
-      q += btn.hasAttribute('data-plus') ? 1 : -1;
-      q = Math.max(0, Math.min(99, q));
-      cart.set(id, q);
-      card.querySelector('.qty-ctl').innerHTML = qtyCtlHTML(q, it.name);
-      card.classList.toggle('in-cart', q > 0);
-      renderCart();
-    });
-    document.getElementById('shop-form').addEventListener('submit', () => {
-      const total = renderCart();
-      if (total === 0) {
-        document.querySelector('.cart-empty')?.scrollIntoView({ behavior: 'smooth', block: 'center' });
-        return;
-      }
-      document.querySelector('.shop-side').innerHTML = `
-        <div class="shop-success">
-          <div class="ok-stamp stamp"><svg viewBox="0 0 100 100"><use href="#lino-stamp-ring"/></svg></div>
-          <strong>Objednávka přijata!</strong>
-          <p>Ráno bude čerstvě upečeno a schováno na vaše jméno.<br><em>(Ukázka — v ostré verzi přijde potvrzení SMS/e-mailem.)</em></p>
-        </div>`;
-    });
-
-    // ══ ADMIN ══
-    const adminRoot = document.getElementById('admin-root');
-    function renderAdmin() {
-      adminRoot.innerHTML = `
-        <div class="admin-card">
-          <h3>Aktuality na úvodu</h3>
-          <div class="form-field" style="margin-bottom:1rem">
-            <label for="a-news-title">Nadpis banneru</label>
-            <input id="a-news-title" type="text" value="${esc(DATA.news.title)}">
-          </div>
-          <div id="a-news-list">
-            ${DATA.news.items.map((i, idx) => `
-            <div class="a-news-item" data-idx="${idx}">
-              <div class="form-field"><label>Novinka</label><input type="text" data-f="t" value="${esc(i.t)}"></div>
-              <div class="form-field"><label>Doplněk (menší řádek)</label><input type="text" data-f="s" value="${esc(i.s)}"></div>
-              <button type="button" class="btn-del" data-del-news="${idx}" title="Smazat">✕</button>
-            </div>`).join('')}
-          </div>
-          <button type="button" class="btn-mini" data-add-news>+ Přidat novinku</button>
-        </div>
-
-        <div class="admin-card">
-          <h3>Nabídka a ceny</h3>
-          ${CATS.map(c => `
-            <div class="a-cat-head">${c.key}</div>
-            ${DATA.products.filter(pr => pr.cat === c.key).map(pr => `
-            <div class="a-prod" data-id="${pr.id}">
-              <div class="form-field"><label>Název</label><input type="text" data-f="name" value="${esc(pr.name)}"></div>
-              <div class="form-field"><label>Cena Kč</label><input type="number" min="0" data-f="price" value="${pr.price}"></div>
-              <div class="form-field"><label>Štítek</label>
-                <select data-f="tag">
-                  <option value=""${pr.tag === '' ? ' selected' : ''}>—</option>
-                  <option value="kvásek"${pr.tag === 'kvásek' ? ' selected' : ''}>kvásek</option>
-                  <option value="máslo"${pr.tag === 'máslo' ? ' selected' : ''}>máslo</option>
-                  <option value="sezónní"${pr.tag === 'sezónní' ? ' selected' : ''}>sezónní</option>
-                </select>
-              </div>
-              <label class="a-check"><input type="checkbox" data-f="active"${pr.active ? ' checked' : ''}>v nabídce</label>
-              <button type="button" class="btn-del" data-del-prod="${pr.id}" title="Smazat">✕</button>
-              <div class="form-field a-desc"><label>Popis (nepovinný)</label><input type="text" data-f="desc" value="${esc(pr.desc)}"></div>
-            </div>`).join('')}
-            <button type="button" class="btn-mini" data-add-prod="${c.key}">+ Přidat do „${c.key}“</button>
-          `).join('')}
-        </div>
-
-        <div class="admin-card">
-          <h3>Kontakt a otevírací doba</h3>
-          <div class="a-grid2">
-            <div class="form-field"><label for="a-phone">Telefon</label><input id="a-phone" type="tel" placeholder="např. 603 123 456" value="${esc(DATA.contact.phone)}"></div>
-            <div class="form-field"><label for="a-email">E-mail</label><input id="a-email" type="email" placeholder="např. info@pekarstvijakodriv.cz" value="${esc(DATA.contact.email)}"></div>
-            <div class="form-field"><label for="a-week">Pondělí – Pátek</label><input id="a-week" type="text" value="${esc(DATA.contact.week)}"></div>
-            <div class="form-field"><label for="a-weekend">Sobota – Neděle</label><input id="a-weekend" type="text" value="${esc(DATA.contact.weekend)}"></div>
-          </div>
-        </div>
-
-        <div class="a-actions">
-          <button type="button" class="btn-dark" id="a-save">Uložit změny</button>
-          <a href="#uvod" class="btn-mini" style="margin-top:0">Zobrazit web</a>
-          <button type="button" class="a-reset" id="a-reset">Vrátit vše do původního stavu</button>
-        </div>`;
-    }
-
-    function collectAdmin() {
-      DATA.news.title = document.getElementById('a-news-title').value.trim() || 'Čerstvé aktuality';
-      DATA.news.items = [...adminRoot.querySelectorAll('.a-news-item')].map(row => ({
-        t: row.querySelector('[data-f="t"]').value.trim(),
-        s: row.querySelector('[data-f="s"]').value.trim(),
-      })).filter(i => i.t);
-      adminRoot.querySelectorAll('.a-prod').forEach(row => {
-        const pr = DATA.products.find(x => x.id === row.dataset.id);
-        if (!pr) return;
-        pr.name = row.querySelector('[data-f="name"]').value.trim() || pr.name;
-        pr.price = Math.max(0, parseInt(row.querySelector('[data-f="price"]').value, 10) || 0);
-        pr.tag = row.querySelector('[data-f="tag"]').value;
-        pr.active = row.querySelector('[data-f="active"]').checked;
-        pr.desc = row.querySelector('[data-f="desc"]').value.trim();
-      });
-      DATA.contact.phone = document.getElementById('a-phone').value.trim();
-      DATA.contact.email = document.getElementById('a-email').value.trim();
-      DATA.contact.week = document.getElementById('a-week').value.trim() || '7:00 – do vyprodání';
-      DATA.contact.weekend = document.getElementById('a-weekend').value.trim() || 'Zavřeno';
-    }
-
-    function renderAll() { renderNews(); renderMenu(); renderContact(); renderShop(); renderCart(); }
-
-    function toast(msg) {
-      const t = document.getElementById('a-toast');
-      t.textContent = msg;
-      t.classList.add('on');
-      clearTimeout(toast._h);
-      toast._h = setTimeout(() => t.classList.remove('on'), 2600);
-    }
-
-    adminRoot.addEventListener('click', e => {
-      const addNews = e.target.closest('[data-add-news]');
-      const delNews = e.target.closest('[data-del-news]');
-      const addProd = e.target.closest('[data-add-prod]');
-      const delProd = e.target.closest('[data-del-prod]');
-      if (addNews) { collectAdmin(); DATA.news.items.push({ t: 'Nová novinka', s: '' }); renderAdmin(); }
-      else if (delNews) { collectAdmin(); DATA.news.items.splice(+delNews.dataset.delNews, 1); renderAdmin(); }
-      else if (addProd) {
-        collectAdmin();
-        const id = 'p' + Math.random().toString(36).slice(2, 8);
-        DATA.products.push({ id, cat: addProd.dataset.addProd, name: 'Nová položka', desc: '', price: 0, tag: '', active: true });
-        renderAdmin();
-      }
-      else if (delProd) {
-        collectAdmin();
-        DATA.products = DATA.products.filter(x => x.id !== delProd.dataset.delProd);
-        renderAdmin();
-      }
-      else if (e.target.id === 'a-save') {
-        collectAdmin(); persist(); renderAll(); renderAdmin();
-        toast('Uloženo — změny jsou na webu ✓');
-      }
-      else if (e.target.id === 'a-reset') {
-        if (confirm('Opravdu vrátit všechen obsah do původního stavu?')) {
-          localStorage.removeItem(LS_KEY);
-          DATA = loadData();
-          renderAll(); renderAdmin();
-          toast('Obnoveno do původního stavu');
-        }
-      }
-    });
-
-    renderAll();
-    renderAdmin();
-
-    // ── vstupní animace mastheadu ──
+    // Hero animace — logo se kreslí samo (CSS), text nastupuje za ním
     setTimeout(() => {
-      ['w1','w2'].forEach((id, i) =>
-        setTimeout(() => document.getElementById(id).classList.add('vis'), 550 + i * 150)
+      setTimeout(() => document.getElementById('ey').classList.add('vis'), 1050);
+      ['w1','w2'].forEach((id,i) =>
+        setTimeout(() => document.getElementById(id).classList.add('vis'), 1250 + i*140)
       );
-    }, 60);
+      setTimeout(() => document.getElementById('hs').classList.add('vis'),  1750);
+      setTimeout(() => document.getElementById('hc').classList.add('vis'),  1950);
+      setTimeout(() => document.getElementById('hsc').classList.add('vis'), 2150);
+    }, 80);
+
+    // Scroll reveal
+    const io = new IntersectionObserver(entries => {
+      entries.forEach(e => {
+        if (e.isIntersecting) { e.target.classList.add('vis'); io.unobserve(e.target); }
+      });
+    }, { threshold: .14, rootMargin: '0px 0px -40px 0px' });
+    document.querySelectorAll('.rev').forEach(el => io.observe(el));
   </script>
-<div id="a-toast">Uloženo — změny jsou na webu ✓</div>
 </body>
 </html>
