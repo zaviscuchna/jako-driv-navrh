@@ -98,8 +98,9 @@
     nav.nav-solid .nav-logo-mark { opacity: .95; transform: none; }
     .nav-logo-mark svg { width: 100%; height: 100%; }
 
+    /* na mobilu nechat jen „Nabídka" — „Dnes pečeme" už je jako CTA v hero */
     @media (max-width: 680px) {
-      .nav-left .nav-link:not(:first-child), .nav-left .nav-sep { display: none; }
+      .nav-left .nav-link:not(:nth-child(3)), .nav-left .nav-sep { display: none; }
       .nav-logo-mark { display: none; }
     }
 
