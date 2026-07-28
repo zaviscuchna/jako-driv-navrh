@@ -498,12 +498,39 @@
       color: var(--muted); max-width: 28ch; text-align: right; line-height: 1.55;
     }
     @media (max-width: 600px) { .pecivo-note { display: none; } }
-    .polaroid-wall {
-      display: flex; flex-wrap: wrap; justify-content: center;
-      gap: clamp(1.25rem, 3vw, 2.75rem);
-      padding: 1rem var(--gutter) 0;
-      max-width: 1280px; margin: 0 auto;
+    /* pás fotek — scrolluje se do strany, svislý scroll stránky zůstává nativní */
+    .strip-wrap { position: relative; max-width: 1440px; margin: 0 auto; }
+    .strip-wrap::before, .strip-wrap::after {
+      content: ''; position: absolute; top: 0; bottom: 0;
+      width: clamp(20px, 4vw, 64px); z-index: 3; pointer-events: none;
     }
+    .strip-wrap::before { left: 0; background: linear-gradient(to right, var(--primary), rgba(198,139,60,0)); }
+    .strip-wrap::after { right: 0; background: linear-gradient(to left, var(--primary), rgba(198,139,60,0)); }
+    .polaroid-strip {
+      display: flex; align-items: flex-start;
+      gap: clamp(1.5rem, 2.5vw, 2.5rem);
+      overflow-x: auto; overscroll-behavior-x: contain;
+      scroll-snap-type: x proximity;
+      padding: 2.5rem var(--gutter) 3.25rem;
+      scrollbar-width: none;
+      cursor: grab;
+    }
+    .polaroid-strip::-webkit-scrollbar { display: none; }
+    .polaroid-strip.dragging { cursor: grabbing; scroll-snap-type: none; user-select: none; }
+    .polaroid-strip .polaroid { flex: 0 0 auto; scroll-snap-align: center; }
+    .strip-btn {
+      position: absolute; top: 50%; transform: translateY(-50%);
+      z-index: 4; width: 46px; height: 46px; border-radius: 50%;
+      border: none; cursor: pointer;
+      background: var(--bg-dark); color: var(--text-inv);
+      display: flex; align-items: center; justify-content: center;
+      box-shadow: 0 10px 24px rgba(23,20,14,.3);
+      transition: background .3s ease, transform .3s var(--spring);
+    }
+    .strip-btn:hover { background: var(--primary-deep); transform: translateY(-50%) scale(1.08); }
+    .strip-btn.prev { left: clamp(.4rem, 1.5vw, 1.25rem); }
+    .strip-btn.next { right: clamp(.4rem, 1.5vw, 1.25rem); }
+    @media (max-width: 680px) { .strip-btn { display: none; } }
     .polaroid {
       --r: 0deg;
       position: relative;
@@ -538,7 +565,7 @@
       transform: translateX(-50%) rotate(var(--tr, -2deg));
     }
     @media (max-width: 640px) {
-      .polaroid { width: clamp(145px, 42vw, 220px); padding: 7px 7px 0; }
+      .polaroid { width: min(62vw, 250px); padding: 8px 8px 0; }
       .polaroid:nth-child(even) { margin-top: 1.5rem; }
     }
 
@@ -1063,9 +1090,13 @@
         <p class="label rev">Z naší pece &middot; Každé ráno jinak</p>
         <h2 class="block-title xl rev d1">Vypečená<br><em>galerie</em></h2>
       </div>
-      <p class="pecivo-note rev d2">Nabídka se mění podle sezóny a nálady pekaře — přijďte, nikdy nevíte, co skvělého čeká.</p>
+      <p class="pecivo-note rev d2">Projíždějte fotky do strany — a přijďte ochutnat, nabídka se mění každé ráno.</p>
     </div>
-    <div class="polaroid-wall rev">
+    <div class="strip-wrap rev">
+      <button class="strip-btn prev" type="button" aria-label="Předchozí fotky">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>
+      </button>
+      <div class="polaroid-strip" id="strip">
       <figure class="polaroid" style="--r:-2.8deg; --tr:-3deg">
         <div class="tape"></div>
         <img src="foto/chleb-kvas.jpg" alt="Kvasové chleby na dřevěných policích" loading="lazy" style="object-position:center 55%">
@@ -1111,6 +1142,10 @@
         <img src="foto/vyroba.jpg" alt="Luboš zakládá plech do pece" loading="lazy" style="object-position:center 30%">
         <figcaption>další várka do pece</figcaption>
       </figure>
+      </div>
+      <button class="strip-btn next" type="button" aria-label="Další fotky">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+      </button>
     </div>
   </section>
 
@@ -1222,6 +1257,24 @@
       });
     }, { threshold: .14, rootMargin: '0px 0px -40px 0px' });
     document.querySelectorAll('.rev').forEach(el => io.observe(el));
+
+    // Galerie — šipky + tažení myší; svislé scrollování stránky necháváme být
+    const strip = document.getElementById('strip');
+    if (strip) {
+      const step = () => (strip.querySelector('.polaroid').getBoundingClientRect().width + 28) * 2;
+      document.querySelector('.strip-btn.prev').addEventListener('click', () => strip.scrollBy({ left: -step(), behavior: 'smooth' }));
+      document.querySelector('.strip-btn.next').addEventListener('click', () => strip.scrollBy({ left: step(), behavior: 'smooth' }));
+      let down = false, startX = 0, startLeft = 0;
+      strip.addEventListener('pointerdown', e => {
+        if (e.pointerType !== 'mouse') return;
+        down = true; startX = e.clientX; startLeft = strip.scrollLeft;
+        strip.classList.add('dragging');
+      });
+      window.addEventListener('pointermove', e => {
+        if (down) strip.scrollLeft = startLeft - (e.clientX - startX);
+      });
+      window.addEventListener('pointerup', () => { down = false; strip.classList.remove('dragging'); });
+    }
   </script>
 </body>
 </html>
