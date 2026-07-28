@@ -196,28 +196,6 @@
     .btn-ghost { background: transparent; color: var(--text-inv); border: 1px solid rgba(240,235,225,.35); }
     .btn-ghost:hover { border-color: var(--text-inv); transform: translateY(-3px); }
 
-    .hero-scroll {
-      position: absolute; right: var(--gutter); bottom: clamp(3rem,7vw,7rem);
-      z-index: 2; display: flex; flex-direction: column; align-items: center; gap: .5rem;
-      opacity: 0; transition: opacity .6s ease 1.2s;
-    }
-    .hero-scroll.vis { opacity: 1; }
-    .hero-scroll span {
-      font-size: .6rem; letter-spacing: .22em; text-transform: uppercase;
-      color: rgba(240,235,225,.4); writing-mode: vertical-rl;
-    }
-    .scroll-line {
-      width: 1px; height: 56px;
-      background: linear-gradient(to bottom, var(--primary), transparent);
-      animation: sline 2.2s ease-in-out infinite;
-    }
-    @keyframes sline {
-      0%  { transform: scaleY(0); transform-origin: top; }
-      49% { transform: scaleY(1); transform-origin: top; }
-      50% { transform: scaleY(1); transform-origin: bottom; }
-      100%{ transform: scaleY(0); transform-origin: bottom; }
-    }
-
     /* ── LINOCUT STAMPS (sdílené) ── */
     .stamp { color: currentColor; }
     .stamp svg { display: block; width: 100%; height: 100%; }
@@ -840,10 +818,6 @@
         <a href="#story" class="btn-ghost">Náš příběh</a>
       </div>
     </div>
-    <div class="hero-scroll" id="hsc">
-      <div class="scroll-line"></div>
-      <span>Scroll</span>
-    </div>
   </section>
 
   <!-- ── DNES PEČEME ── -->
@@ -1247,7 +1221,6 @@
       );
       setTimeout(() => document.getElementById('hs').classList.add('vis'),  1750);
       setTimeout(() => document.getElementById('hc').classList.add('vis'),  1950);
-      setTimeout(() => document.getElementById('hsc').classList.add('vis'), 2150);
     }, 80);
 
     // Scroll reveal
